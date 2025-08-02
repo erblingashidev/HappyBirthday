@@ -53,17 +53,41 @@ class InteractivePhotoBook {
             }
         }, { passive: false });
         
-        // Prevent pull-to-refresh
+        // Prevent pull-to-refresh and handle horizontal scrolling
         document.addEventListener('touchmove', (e) => {
+            // Only prevent default for horizontal swipes
             if (e.touches.length === 1) {
-                e.preventDefault();
+                const touch = e.touches[0];
+                const startX = this.lastTouchX || touch.clientX;
+                const startY = this.lastTouchY || touch.clientY;
+                
+                const diffX = Math.abs(touch.clientX - startX);
+                const diffY = Math.abs(touch.clientY - startY);
+                
+                // If horizontal movement is greater than vertical, prevent default
+                if (diffX > diffY && diffX > 10) {
+                    e.preventDefault();
+                }
+                
+                this.lastTouchX = touch.clientX;
+                this.lastTouchY = touch.clientY;
             }
         }, { passive: false });
+        
+        // Reset touch coordinates
+        document.addEventListener('touchend', () => {
+            this.lastTouchX = null;
+            this.lastTouchY = null;
+        });
         
         // Add haptic feedback for page changes
         if ('vibrate' in navigator) {
             this.addHapticFeedback = true;
         }
+        
+        // Prevent horizontal scrolling on the body
+        document.body.style.overflowX = 'hidden';
+        document.body.style.touchAction = 'pan-y';
     }
 
     setupEventListeners() {
@@ -133,7 +157,7 @@ class InteractivePhotoBook {
             startY = e.touches[0].clientY;
             startTime = Date.now();
             isSwiping = false;
-        });
+        }, { passive: false });
 
         document.addEventListener('touchmove', (e) => {
             if (!isSwiping) {
@@ -144,7 +168,17 @@ class InteractivePhotoBook {
                     isSwiping = true;
                 }
             }
-        });
+            
+            // Prevent default scrolling when swiping horizontally
+            if (isSwiping) {
+                const diffX = Math.abs(e.touches[0].clientX - startX);
+                const diffY = Math.abs(e.touches[0].clientY - startY);
+                
+                if (diffX > diffY) {
+                    e.preventDefault();
+                }
+            }
+        }, { passive: false });
 
         document.addEventListener('touchend', (e) => {
             if (!isSwiping) return;
@@ -158,6 +192,7 @@ class InteractivePhotoBook {
             // Horizontal swipe detection with minimum distance and speed
             if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && duration < 500) {
                 e.preventDefault();
+                e.stopPropagation();
                 if (diffX > 0) {
                     console.log('Swipe right - next page');
                     this.nextPage();
@@ -166,7 +201,7 @@ class InteractivePhotoBook {
                     this.prevPage();
                 }
             }
-        });
+        }, { passive: false });
 
         // Mouse events for desktop
         let mouseStartX = 0;
