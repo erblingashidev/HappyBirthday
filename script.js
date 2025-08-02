@@ -14,6 +14,56 @@ class InteractivePhotoBook {
         this.createConfetti();
         this.setupPageAnimations();
         this.setupSwipeGestures();
+        this.setupMobileExperience();
+    }
+
+    setupMobileExperience() {
+        // Check if device is mobile
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                        (window.innerWidth <= 768);
+        
+        if (isMobile) {
+            // Show swipe indicator after a delay
+            setTimeout(() => {
+                this.showSwipeIndicator();
+            }, 2000);
+            
+            // Add mobile-specific optimizations
+            this.addMobileOptimizations();
+        }
+    }
+
+    showSwipeIndicator() {
+        const swipeIndicator = document.getElementById('swipe-indicator');
+        if (swipeIndicator) {
+            swipeIndicator.classList.add('show');
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                swipeIndicator.classList.remove('show');
+            }, 3000);
+        }
+    }
+
+    addMobileOptimizations() {
+        // Prevent zoom on double tap
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Prevent pull-to-refresh
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Add haptic feedback for page changes
+        if ('vibrate' in navigator) {
+            this.addHapticFeedback = true;
+        }
     }
 
     setupEventListeners() {
@@ -74,23 +124,87 @@ class InteractivePhotoBook {
     setupSwipeGestures() {
         let startX = 0;
         let startY = 0;
+        let startTime = 0;
+        let isSwiping = false;
         
+        // Touch events for mobile
         document.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
+            startTime = Date.now();
+            isSwiping = false;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isSwiping) {
+                const diffX = Math.abs(e.touches[0].clientX - startX);
+                const diffY = Math.abs(e.touches[0].clientY - startY);
+                
+                if (diffX > 10 || diffY > 10) {
+                    isSwiping = true;
+                }
+            }
         });
 
         document.addEventListener('touchend', (e) => {
+            if (!isSwiping) return;
+            
             const endX = e.changedTouches[0].clientX;
             const endY = e.changedTouches[0].clientY;
             const diffX = startX - endX;
             const diffY = startY - endY;
+            const duration = Date.now() - startTime;
 
-            // Horizontal swipe detection
-            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            // Horizontal swipe detection with minimum distance and speed
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && duration < 500) {
+                e.preventDefault();
                 if (diffX > 0) {
+                    console.log('Swipe right - next page');
                     this.nextPage();
                 } else {
+                    console.log('Swipe left - prev page');
+                    this.prevPage();
+                }
+            }
+        });
+
+        // Mouse events for desktop
+        let mouseStartX = 0;
+        let mouseStartY = 0;
+        let mouseStartTime = 0;
+        let isMouseSwiping = false;
+
+        document.addEventListener('mousedown', (e) => {
+            mouseStartX = e.clientX;
+            mouseStartY = e.clientY;
+            mouseStartTime = Date.now();
+            isMouseSwiping = false;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isMouseSwiping) {
+                const diffX = Math.abs(e.clientX - mouseStartX);
+                const diffY = Math.abs(e.clientY - mouseStartY);
+                
+                if (diffX > 10 || diffY > 10) {
+                    isMouseSwiping = true;
+                }
+            }
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            if (!isMouseSwiping) return;
+            
+            const diffX = mouseStartX - e.clientX;
+            const diffY = mouseStartY - e.clientY;
+            const duration = Date.now() - mouseStartTime;
+
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && duration < 500) {
+                if (diffX > 0) {
+                    console.log('Mouse swipe right - next page');
+                    this.nextPage();
+                } else {
+                    console.log('Mouse swipe left - prev page');
                     this.prevPage();
                 }
             }
@@ -99,8 +213,10 @@ class InteractivePhotoBook {
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
+                e.preventDefault();
                 this.prevPage();
             } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
                 this.nextPage();
             }
         });
@@ -232,6 +348,11 @@ class InteractivePhotoBook {
         
         this.isTransitioning = true;
         
+        // Add haptic feedback for mobile
+        if (this.addHapticFeedback && 'vibrate' in navigator) {
+            navigator.vibrate(50);
+        }
+        
         // Hide all pages first
         const allPages = document.querySelectorAll('.book-page');
         allPages.forEach(page => {
@@ -260,6 +381,12 @@ class InteractivePhotoBook {
         // Special effects for specific pages
         if (pageNumber === 8) { // Birthday page
             this.activateBirthdayPage();
+        }
+        
+        // Hide swipe indicator after first page change
+        const swipeIndicator = document.getElementById('swipe-indicator');
+        if (swipeIndicator && swipeIndicator.classList.contains('show')) {
+            swipeIndicator.classList.remove('show');
         }
         
         setTimeout(() => {
