@@ -1,0 +1,838 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Animated Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 217, 61, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(168, 230, 207, 0.1) 0%, transparent 50%);
+    animation: backgroundFloat 20s ease-in-out infinite;
+    z-index: -1;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 1s ease-in-out;
+}
+
+.welcome-content {
+    text-align: center;
+    color: white;
+    animation: fadeInUp 1s ease-out;
+}
+
+.main-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+}
+
+.hearts-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.heart {
+    width: 18px;
+    height: 18px;
+    background: #ff6b6b;
+    position: relative;
+    transform: rotate(45deg);
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+.heart::before,
+.heart::after {
+    content: '';
+    width: 18px;
+    height: 18px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart::before {
+    top: -9px;
+    left: 0;
+}
+
+.heart::after {
+    top: 0;
+    left: -9px;
+}
+
+.enter-btn {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    animation: pulse 2s infinite;
+}
+
+.enter-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Museum Container */
+.museum-container {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: all 0.5s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Floating Navigation */
+.museum-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    transition: opacity 0.5s ease;
+}
+
+.museum-nav.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nav-btn {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 0.8rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+    pointer-events: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    animation: float 6s ease-in-out infinite;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Random positions for nav buttons */
+.nav-btn[data-room="entrance"] {
+    top: 15%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.nav-btn[data-room="memories"] {
+    top: 25%;
+    right: 15%;
+    animation-delay: 1s;
+}
+
+.nav-btn[data-room="quotes"] {
+    top: 45%;
+    left: 8%;
+    animation-delay: 2s;
+}
+
+.nav-btn[data-room="photos"] {
+    top: 55%;
+    right: 12%;
+    animation-delay: 3s;
+}
+
+.nav-btn[data-room="apology"] {
+    top: 75%;
+    left: 15%;
+    animation-delay: 4s;
+}
+
+.nav-btn[data-room="birthday"] {
+    top: 85%;
+    right: 10%;
+    animation-delay: 5s;
+}
+
+/* Back to Entrance Button */
+.back-to-entrance {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 0.8rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+    animation: float 4s ease-in-out infinite;
+}
+
+.back-to-entrance.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.back-to-entrance:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Shake Detection Area */
+.shake-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+}
+
+.shake-area.active {
+    pointer-events: auto;
+}
+
+/* Room Container */
+.room-container {
+    padding-top: 20px;
+    min-height: 100vh;
+}
+
+.room {
+    display: none;
+    min-height: 100vh;
+    padding: 1rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.room.active {
+    display: block;
+}
+
+.room-content {
+    max-width: 100%;
+    margin: 0 auto;
+    color: white;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.room-content h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Memory Timeline */
+.memory-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.memory-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: slideInUp 0.6s ease-out;
+}
+
+.memory-item:nth-child(1) { animation-delay: 0.1s; }
+.memory-item:nth-child(2) { animation-delay: 0.2s; }
+.memory-item:nth-child(3) { animation-delay: 0.3s; }
+.memory-item:nth-child(4) { animation-delay: 0.4s; }
+
+.memory-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.memory-date {
+    font-weight: 600;
+    color: #ffd93d;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.memory-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    color: #ff6b6b;
+}
+
+.memory-content p {
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Quotes Gallery */
+.quotes-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.quote-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: slideInUp 0.6s ease-out;
+}
+
+.quote-item:nth-child(1) { animation-delay: 0.1s; }
+.quote-item:nth-child(2) { animation-delay: 0.2s; }
+.quote-item:nth-child(3) { animation-delay: 0.3s; }
+.quote-item:nth-child(4) { animation-delay: 0.4s; }
+.quote-item:nth-child(5) { animation-delay: 0.5s; }
+
+.quote-item:hover {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.quote-item blockquote {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+}
+
+.quote-item cite {
+    color: #ffd93d;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Photo Gallery */
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.photo-item {
+    aspect-ratio: 1;
+    transition: all 0.3s ease;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.photo-item:nth-child(1) { animation-delay: 0.1s; }
+.photo-item:nth-child(2) { animation-delay: 0.2s; }
+.photo-item:nth-child(3) { animation-delay: 0.3s; }
+.photo-item:nth-child(4) { animation-delay: 0.4s; }
+.photo-item:nth-child(5) { animation-delay: 0.5s; }
+.photo-item:nth-child(6) { animation-delay: 0.6s; }
+
+.photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    padding: 1rem;
+}
+
+.photo-placeholder:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.photo-placeholder span {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.photo-placeholder p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Apology Room */
+.apology-content {
+    max-width: 100%;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+.apology-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.apology-text p:nth-child(1) { animation-delay: 0.1s; }
+.apology-text p:nth-child(2) { animation-delay: 0.2s; }
+.apology-text p:nth-child(3) { animation-delay: 0.3s; }
+.apology-text p:nth-child(4) { animation-delay: 0.4s; }
+
+.apology-hearts {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.apology-hearts .heart {
+    font-size: 1.8rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.apology-hearts .heart:nth-child(2) { animation-delay: 0.5s; }
+.apology-hearts .heart:nth-child(3) { animation-delay: 1s; }
+.apology-hearts .heart:nth-child(4) { animation-delay: 1.5s; }
+.apology-hearts .heart:nth-child(5) { animation-delay: 2s; }
+
+/* Birthday Room */
+.birthday-celebration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.birthday-cake {
+    position: relative;
+    margin-bottom: 2rem;
+    animation: bounce 0.6s ease-in-out;
+}
+
+.cake-layer {
+    width: 150px;
+    height: 30px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    border-radius: 10px;
+    margin-bottom: 4px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.cake-layer:nth-child(2) {
+    width: 135px;
+    background: linear-gradient(45deg, #ffd93d, #ffb347);
+}
+
+.cake-layer:nth-child(3) {
+    width: 120px;
+    background: linear-gradient(45deg, #a8e6cf, #88d8c0);
+}
+
+.candle {
+    width: 6px;
+    height: 25px;
+    background: #ffd93d;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+}
+
+.flame {
+    width: 10px;
+    height: 15px;
+    background: #ff6b6b;
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 1s ease-in-out infinite alternate;
+}
+
+.birthday-message {
+    text-align: center;
+    max-width: 100%;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.birthday-message h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+    color: #ffd93d;
+}
+
+.birthday-message p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+}
+
+/* Enhanced Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    to {
+        text-shadow: 2px 2px 20px rgba(255,255,255,0.5);
+    }
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: rotate(45deg) scale(1);
+    }
+    50% {
+        transform: rotate(45deg) scale(1.2);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-8px) rotate(1deg);
+    }
+    50% {
+        transform: translateY(-4px) rotate(-1deg);
+    }
+    75% {
+        transform: translateY(-12px) rotate(0.5deg);
+    }
+}
+
+@keyframes flicker {
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-50%) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes backgroundFloat {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(-10px, -10px) scale(1.1);
+    }
+    66% {
+        transform: translate(10px, -5px) scale(0.9);
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkleFloat {
+    0% {
+        transform: translateY(0) scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-20px) scale(1) rotate(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-40px) scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes floatingParticle {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes floatingHeart {
+    0% {
+        transform: translateY(0) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-50px) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-15px);
+    }
+    60% {
+        transform: translateY(-7px);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* Mobile-specific enhancements */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.8rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .nav-btn {
+        font-size: 0.8rem;
+        padding: 0.7rem 1rem;
+    }
+    
+    .back-to-entrance {
+        font-size: 0.8rem;
+        padding: 0.7rem 1rem;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .room-content h2 {
+        font-size: 2rem;
+    }
+    
+    .memory-item,
+    .quote-item {
+        padding: 1.2rem;
+    }
+    
+    .photo-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+    
+    .photo-placeholder span {
+        font-size: 2.5rem;
+    }
+    
+    .photo-placeholder p {
+        font-size: 0.8rem;
+    }
+    
+    .birthday-cake .cake-layer {
+        width: 120px;
+        height: 25px;
+    }
+    
+    .birthday-cake .cake-layer:nth-child(2) {
+        width: 105px;
+    }
+    
+    .birthday-cake .cake-layer:nth-child(3) {
+        width: 90px;
+    }
+    
+    .birthday-message h3 {
+        font-size: 1.4rem;
+    }
+    
+    .birthday-message p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2.2rem;
+    }
+    
+    .nav-btn {
+        font-size: 0.7rem;
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .back-to-entrance {
+        font-size: 0.7rem;
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .room-content h2 {
+        font-size: 1.8rem;
+    }
+    
+    .photo-gallery {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .photo-placeholder {
+        aspect-ratio: 1;
+        max-width: 200px;
+        margin: 0 auto;
+    }
+} 

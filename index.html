@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Museum of Us - A Birthday Gift</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="welcome-screen">
+        <div class="welcome-content">
+            <h1 class="main-title">The Museum of Us</h1>
+            <p class="subtitle">A journey through our memories</p>
+            <div class="hearts-container">
+                <div class="heart"></div>
+                <div class="heart"></div>
+                <div class="heart"></div>
+                <div class="heart"></div>
+                <div class="heart"></div>
+            </div>
+            <button id="enter-museum" class="enter-btn">Enter the Gallery</button>
+        </div>
+    </div>
+
+    <!-- Museum Container -->
+    <div id="museum-container" class="museum-container hidden">
+        <!-- Back to Entrance Button -->
+        <button id="back-to-entrance" class="back-to-entrance">🏠 Home</button>
+        
+        <!-- Shake Detection Area -->
+        <div id="shake-area" class="shake-area"></div>
+        
+        <!-- Navigation -->
+        <nav id="museum-nav" class="museum-nav">
+            <button class="nav-btn active" data-room="entrance">Entrance</button>
+            <button class="nav-btn" data-room="memories">Memories</button>
+            <button class="nav-btn" data-room="quotes">Quotes</button>
+            <button class="nav-btn" data-room="photos">Photos</button>
+            <button class="nav-btn" data-room="apology">Apology</button>
+            <button class="nav-btn" data-room="birthday">Birthday</button>
+        </nav>
+
+        <!-- Room Container -->
+        <div id="room-container" class="room-container">
+            <!-- Entrance Room -->
+            <div id="entrance" class="room active">
+                <div class="room-content">
+                    <h2>Welcome to Our Museum</h2>
+                    <p>Every room tells a story of us...</p>
+                    <div class="museum-guide">
+                        <p>Click on the navigation above to explore each room</p>
+                        <p>💡 Tip: Shake your device to reveal navigation!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memories Room -->
+            <div id="memories" class="room">
+                <div class="room-content">
+                    <h2>Our Memories</h2>
+                    <div class="memory-timeline">
+                        <div class="memory-item">
+                            <div class="memory-date">First Date</div>
+                            <div class="memory-content">
+                                <h3>The Beginning</h3>
+                                <p>Remember when we first met? That moment changed everything...</p>
+                            </div>
+                        </div>
+                        <div class="memory-item">
+                            <div class="memory-date">First Kiss</div>
+                            <div class="memory-content">
+                                <h3>Butterflies</h3>
+                                <p>That magical moment when time stood still...</p>
+                            </div>
+                        </div>
+                        <div class="memory-item">
+                            <div class="memory-date">Vacation Together</div>
+                            <div class="memory-content">
+                                <h3>Adventures</h3>
+                                <p>Exploring new places, creating unforgettable memories...</p>
+                            </div>
+                        </div>
+                        <div class="memory-item">
+                            <div class="memory-date">Every Day</div>
+                            <div class="memory-content">
+                                <h3>Growing Together</h3>
+                                <p>Every moment with you is a treasure I cherish...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quotes Room -->
+            <div id="quotes" class="room">
+                <div class="room-content">
+                    <h2>Words That Define Us</h2>
+                    <div class="quotes-gallery">
+                        <div class="quote-item">
+                            <blockquote>"In all the world, there is no heart for me like yours."</blockquote>
+                            <cite>- Maya Angelou</cite>
+                        </div>
+                        <div class="quote-item">
+                            <blockquote>"I have loved you for a thousand years, and I'll love you for a thousand more."</blockquote>
+                            <cite>- Christina Perri</cite>
+                        </div>
+                        <div class="quote-item">
+                            <blockquote>"You are my today and all of my tomorrows."</blockquote>
+                            <cite>- Leo Christopher</cite>
+                        </div>
+                        <div class="quote-item">
+                            <blockquote>"Every love story is beautiful, but ours is my favorite."</blockquote>
+                            <cite>- Unknown</cite>
+                        </div>
+                        <div class="quote-item">
+                            <blockquote>"I choose you. And I'll choose you over and over and over. Without pause, without a doubt, in a heartbeat. I'll keep choosing you."</blockquote>
+                            <cite>- Unknown</cite>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photos Room -->
+            <div id="photos" class="room">
+                <div class="room-content">
+                    <h2>Our Photo Gallery</h2>
+                    <div class="photo-gallery">
+                        <div class="photo-item">
+                            <div class="photo-placeholder">
+                                <span>📸</span>
+                                <p>Our First Photo Together</p>
+                            </div>
+                        </div>
+                        <div class="photo-item">
+                            <div class="photo-placeholder">
+                                <span>🌅</span>
+                                <p>Sunset Walks</p>
+                            </div>
+                        </div>
+                        <div class="photo-item">
+                            <div class="photo-placeholder">
+                                <span>🎭</span>
+                                <p>Fun Times</p>
+                            </div>
+                        </div>
+                        <div class="photo-item">
+                            <div class="photo-placeholder">
+                                <span>💕</span>
+                                <p>Special Moments</p>
+                            </div>
+                        </div>
+                        <div class="photo-item">
+                            <div class="photo-placeholder">
+                                <span>🌟</span>
+                                <p>Adventures</p>
+                            </div>
+                        </div>
+                        <div class="photo-item">
+                            <div class="photo-placeholder">
+                                <span>🎉</span>
+                                <p>Celebrations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Apology Room -->
+            <div id="apology" class="room">
+                <div class="room-content">
+                    <h2>I'm Sorry</h2>
+                    <div class="apology-content">
+                        <div class="apology-text">
+                            <p>I know I've made mistakes, and I want you to know how truly sorry I am.</p>
+                            <p>You deserve the world, and I promise to be better for you.</p>
+                            <p>Your happiness means everything to me.</p>
+                            <p>I love you more than words can express.</p>
+                        </div>
+                        <div class="apology-hearts">
+                            <div class="heart">❤️</div>
+                            <div class="heart">💖</div>
+                            <div class="heart">💝</div>
+                            <div class="heart">💕</div>
+                            <div class="heart">💗</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Birthday Room -->
+            <div id="birthday" class="room">
+                <div class="room-content">
+                    <h2>Happy Birthday, My Love! 🎂</h2>
+                    <div class="birthday-celebration">
+                        <div class="birthday-cake">
+                            <div class="cake-layer"></div>
+                            <div class="cake-layer"></div>
+                            <div class="cake-layer"></div>
+                            <div class="candle"></div>
+                            <div class="flame"></div>
+                        </div>
+                        <div class="birthday-message">
+                            <h3>On Your Special Day</h3>
+                            <p>May this year bring you all the joy, love, and happiness you deserve.</p>
+                            <p>You make every day feel like a celebration.</p>
+                            <p>Happy Birthday, Beautiful! 🎉</p>
+                        </div>
+                    </div>
+                    <div class="confetti-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
