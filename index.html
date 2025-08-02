@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Museum of Us - A Birthday Gift</title>
+    <title>Our Love Story - Interactive Photo Book</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <!-- Welcome Screen -->
     <div id="welcome-screen" class="welcome-screen">
         <div class="welcome-content">
-            <h1 class="main-title">The Museum of Us</h1>
+            <h1 class="main-title">Our Love Story</h1>
             <p class="subtitle">A journey through our memories</p>
             <div class="hearts-container">
                 <div class="heart"></div>
@@ -21,84 +20,110 @@
                 <div class="heart"></div>
                 <div class="heart"></div>
             </div>
-            <button id="enter-museum" class="enter-btn">Enter the Gallery</button>
+            <button id="open-book" class="enter-btn">Open Our Book</button>
         </div>
     </div>
 
-    <!-- Museum Container -->
-    <div id="museum-container" class="museum-container hidden">
-        <!-- Back to Entrance Button -->
-        <button id="back-to-entrance" class="back-to-entrance">🏠 Home</button>
-        
-        <!-- Shake Detection Area -->
-        <div id="shake-area" class="shake-area"></div>
-        
-        <!-- Navigation -->
-        <nav id="museum-nav" class="museum-nav">
-            <button class="nav-btn active" data-room="entrance">Entrance</button>
-            <button class="nav-btn" data-room="memories">Memories</button>
-            <button class="nav-btn" data-room="quotes">Quotes</button>
-            <button class="nav-btn" data-room="photos">Photos</button>
-            <button class="nav-btn" data-room="apology">Apology</button>
-            <button class="nav-btn" data-room="birthday">Birthday</button>
-        </nav>
+    <!-- Photo Book Container -->
+    <div id="book-container" class="book-container hidden">
+        <!-- Book Navigation -->
+        <div class="book-nav">
+            <button id="prev-page" class="nav-btn">←</button>
+            <span id="page-indicator" class="page-indicator">Page 1 of 8</span>
+            <button id="next-page" class="nav-btn">→</button>
+        </div>
 
-        <!-- Room Container -->
-        <div id="room-container" class="room-container">
-            <!-- Entrance Room -->
-            <div id="entrance" class="room active">
-                <div class="room-content">
-                    <h2>Welcome to Our Museum</h2>
-                    <p>Every room tells a story of us...</p>
-                    <div class="museum-guide">
-                        <p>Click on the navigation above to explore each room</p>
-                        <p>💡 Tip: Shake your device to reveal navigation!</p>
+        <!-- Book Pages Container -->
+        <div id="book-pages" class="book-pages">
+            <!-- Page 1: Cover -->
+            <div class="book-page active" data-page="1">
+                <div class="page-content cover-page">
+                    <div class="cover-title">
+                        <h1>Our Love Story</h1>
+                        <p class="subtitle">A journey through our memories</p>
+                    </div>
+                    <div class="cover-hearts">
+                        <span>💕</span><span>💖</span><span>💝</span><span>💕</span>
+                    </div>
+                    <div class="cover-instruction">
+                        <p>Swipe or use arrows to turn pages</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Memories Room -->
-            <div id="memories" class="room">
-                <div class="room-content">
-                    <h2>Our Memories</h2>
-                    <div class="memory-timeline">
-                        <div class="memory-item">
-                            <div class="memory-date">First Date</div>
-                            <div class="memory-content">
-                                <h3>The Beginning</h3>
-                                <p>Remember when we first met? That moment changed everything...</p>
-                            </div>
+            <!-- Page 2: First Meeting -->
+            <div class="book-page" data-page="2">
+                <div class="page-content memory-page">
+                    <div class="page-header">
+                        <h2>Our First Meeting</h2>
+                        <p class="date">January 15, 2024</p>
+                    </div>
+                    <div class="memory-content">
+                        <div class="memory-image">
+                            <span class="photo-emoji">💕</span>
                         </div>
-                        <div class="memory-item">
-                            <div class="memory-date">First Kiss</div>
-                            <div class="memory-content">
-                                <h3>Butterflies</h3>
-                                <p>That magical moment when time stood still...</p>
-                            </div>
+                        <div class="memory-text">
+                            <p>The day our eyes first met and our hearts connected forever. That magical moment when time stood still and everything changed...</p>
+                            <p>Remember how nervous we both were? But the moment we started talking, it felt like we had known each other forever.</p>
                         </div>
-                        <div class="memory-item">
-                            <div class="memory-date">Vacation Together</div>
-                            <div class="memory-content">
-                                <h3>Adventures</h3>
-                                <p>Exploring new places, creating unforgettable memories...</p>
-                            </div>
-                        </div>
-                        <div class="memory-item">
-                            <div class="memory-date">Every Day</div>
-                            <div class="memory-content">
-                                <h3>Growing Together</h3>
-                                <p>Every moment with you is a treasure I cherish...</p>
-                            </div>
+                        <div class="memory-hearts">
+                            <span>❤️</span><span>💖</span><span>💝</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quotes Room -->
-            <div id="quotes" class="room">
-                <div class="room-content">
-                    <h2>Words That Define Us</h2>
-                    <div class="quotes-gallery">
+            <!-- Page 3: Valentine's Day -->
+            <div class="book-page" data-page="3">
+                <div class="page-content memory-page">
+                    <div class="page-header">
+                        <h2>Valentine's Day</h2>
+                        <p class="date">February 14, 2024</p>
+                    </div>
+                    <div class="memory-content">
+                        <div class="memory-image">
+                            <span class="photo-emoji">🌹</span>
+                        </div>
+                        <div class="memory-text">
+                            <p>Roses, chocolates, and endless love. Our first Valentine's Day together was absolutely perfect.</p>
+                            <p>The way you smiled when you saw the roses, the candlelit dinner, and the way we danced under the stars...</p>
+                        </div>
+                        <div class="memory-hearts">
+                            <span>💕</span><span>💗</span><span>💓</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 4: Travel Adventures -->
+            <div class="book-page" data-page="4">
+                <div class="page-content memory-page">
+                    <div class="page-header">
+                        <h2>Our Adventures</h2>
+                        <p class="date">March 2024</p>
+                    </div>
+                    <div class="memory-content">
+                        <div class="memory-image">
+                            <span class="photo-emoji">✈️</span>
+                        </div>
+                        <div class="memory-text">
+                            <p>Exploring new places, creating unforgettable memories together. Every trip with you is an adventure I'll never forget.</p>
+                            <p>From beach vacations to mountain hikes, every moment with you is pure magic.</p>
+                        </div>
+                        <div class="memory-hearts">
+                            <span>🌅</span><span>🏖️</span><span>💕</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 5: Quotes -->
+            <div class="book-page" data-page="5">
+                <div class="page-content quotes-page">
+                    <div class="page-header">
+                        <h2>Words That Define Us</h2>
+                    </div>
+                    <div class="quotes-content">
                         <div class="quote-item">
                             <blockquote>"In all the world, there is no heart for me like yours."</blockquote>
                             <cite>- Maya Angelou</cite>
@@ -115,50 +140,48 @@
                             <blockquote>"Every love story is beautiful, but ours is my favorite."</blockquote>
                             <cite>- Unknown</cite>
                         </div>
-                        <div class="quote-item">
-                            <blockquote>"I choose you. And I'll choose you over and over and over. Without pause, without a doubt, in a heartbeat. I'll keep choosing you."</blockquote>
-                            <cite>- Unknown</cite>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Photos Room -->
-            <div id="photos" class="room">
-                <div class="room-content">
-                    <h2>Our Photo Gallery</h2>
-                    <div class="photo-gallery">
-                        <div class="photo-item">
+            <!-- Page 6: Photo Gallery -->
+            <div class="book-page" data-page="6">
+                <div class="page-content gallery-page">
+                    <div class="page-header">
+                        <h2>Our Photo Gallery</h2>
+                    </div>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
                             <div class="photo-placeholder">
                                 <span>📸</span>
-                                <p>Our First Photo Together</p>
+                                <p>Our First Photo</p>
                             </div>
                         </div>
-                        <div class="photo-item">
+                        <div class="gallery-item">
                             <div class="photo-placeholder">
                                 <span>🌅</span>
                                 <p>Sunset Walks</p>
                             </div>
                         </div>
-                        <div class="photo-item">
+                        <div class="gallery-item">
                             <div class="photo-placeholder">
                                 <span>🎭</span>
                                 <p>Fun Times</p>
                             </div>
                         </div>
-                        <div class="photo-item">
+                        <div class="gallery-item">
                             <div class="photo-placeholder">
                                 <span>💕</span>
                                 <p>Special Moments</p>
                             </div>
                         </div>
-                        <div class="photo-item">
+                        <div class="gallery-item">
                             <div class="photo-placeholder">
                                 <span>🌟</span>
                                 <p>Adventures</p>
                             </div>
                         </div>
-                        <div class="photo-item">
+                        <div class="gallery-item">
                             <div class="photo-placeholder">
                                 <span>🎉</span>
                                 <p>Celebrations</p>
@@ -168,11 +191,16 @@
                 </div>
             </div>
 
-            <!-- Apology Room -->
-            <div id="apology" class="room">
-                <div class="room-content">
-                    <h2>I'm Sorry</h2>
+            <!-- Page 7: Apology -->
+            <div class="book-page" data-page="7">
+                <div class="page-content apology-page">
+                    <div class="page-header">
+                        <h2>I'm Sorry</h2>
+                    </div>
                     <div class="apology-content">
+                        <div class="apology-image">
+                            <span class="photo-emoji">💝</span>
+                        </div>
                         <div class="apology-text">
                             <p>I know I've made mistakes, and I want you to know how truly sorry I am.</p>
                             <p>You deserve the world, and I promise to be better for you.</p>
@@ -180,21 +208,20 @@
                             <p>I love you more than words can express.</p>
                         </div>
                         <div class="apology-hearts">
-                            <div class="heart">❤️</div>
-                            <div class="heart">💖</div>
-                            <div class="heart">💝</div>
-                            <div class="heart">💕</div>
-                            <div class="heart">💗</div>
+                            <span>❤️</span><span>💖</span><span>💝</span><span>💕</span><span>💗</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Birthday Room -->
-            <div id="birthday" class="room">
-                <div class="room-content">
-                    <h2>Happy Birthday, My Love! 🎂</h2>
-                    <div class="birthday-celebration">
+            <!-- Page 8: Birthday -->
+            <div class="book-page" data-page="8">
+                <div class="page-content birthday-page">
+                    <div class="page-header">
+                        <h2>Happy Birthday!</h2>
+                        <p class="date">My Beautiful Love</p>
+                    </div>
+                    <div class="birthday-content">
                         <div class="birthday-cake">
                             <div class="cake-layer"></div>
                             <div class="cake-layer"></div>
@@ -203,16 +230,20 @@
                             <div class="flame"></div>
                         </div>
                         <div class="birthday-message">
-                            <h3>On Your Special Day</h3>
                             <p>May this year bring you all the joy, love, and happiness you deserve.</p>
                             <p>You make every day feel like a celebration.</p>
                             <p>Happy Birthday, Beautiful! 🎉</p>
                         </div>
+                        <div class="birthday-hearts">
+                            <span>🎉</span><span>🎁</span><span>🎊</span><span>💕</span><span>💖</span>
+                        </div>
                     </div>
-                    <div class="confetti-container"></div>
                 </div>
             </div>
         </div>
+
+        <!-- Confetti Container -->
+        <div class="confetti-container"></div>
     </div>
 
     <script src="script.js"></script>

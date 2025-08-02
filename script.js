@@ -1,54 +1,41 @@
-// Museum of Us - Enhanced Mobile Interactive JavaScript
+// Our Love Story - Floating Photo Album JavaScript
 
-class MuseumOfUs {
+class FloatingPhotoAlbum {
     constructor() {
-        this.currentRoom = 'entrance';
-        this.isBirthdayRoomActive = false;
+        this.currentCategory = 'all';
+        this.isBirthdayCardActive = false;
+        this.isApologyCardActive = false;
         this.confettiParticles = [];
-        this.floatingNavButtons = [];
-        this.navigationHidden = false;
-        this.shakeDetector = null;
-        this.lastShakeTime = 0;
         this.init();
     }
 
     init() {
         this.setupEventListeners();
         this.createConfetti();
-        this.setup3DEffects();
-        this.setupFloatingNav();
-        this.addMobileEnhancements();
-        this.setupShakeDetection();
+        this.setupCardAnimations();
+        this.setupSpecialCards();
     }
 
     setupEventListeners() {
-        // Enter museum button
-        const enterBtn = document.getElementById('enter-museum');
+        // Enter album button
+        const enterBtn = document.getElementById('enter-album');
         if (enterBtn) {
-            enterBtn.addEventListener('click', () => this.enterMuseum());
+            enterBtn.addEventListener('click', () => this.enterAlbum());
         }
 
-        // Back to entrance button
-        const backBtn = document.getElementById('back-to-entrance');
+        // Back to home button
+        const backBtn = document.getElementById('back-to-home');
         if (backBtn) {
-            backBtn.addEventListener('click', () => {
-                this.switchRoom('entrance');
-                this.showNavigation();
-            });
+            backBtn.addEventListener('click', () => this.goHome());
         }
 
-        // Navigation buttons with enhanced mobile interactions
+        // Navigation buttons
         const navButtons = document.querySelectorAll('.nav-btn');
         navButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const room = e.target.dataset.room;
-                this.switchRoom(room);
+                const category = e.target.dataset.category;
+                this.filterCards(category);
                 this.addButtonClickEffect(e.target);
-                
-                // Hide navigation after clicking (except for entrance)
-                if (room !== 'entrance') {
-                    this.hideNavigation();
-                }
             });
 
             // Add touch feedback for mobile
@@ -61,235 +48,34 @@ class MuseumOfUs {
             });
         });
 
-        // Enhanced memory items with mobile gestures
-        const memoryItems = document.querySelectorAll('.memory-item');
-        memoryItems.forEach(item => {
-            item.addEventListener('mouseenter', () => this.addHoverEffect(item));
-            item.addEventListener('mouseleave', () => this.removeHoverEffect(item));
+        // Photo card interactions
+        const photoCards = document.querySelectorAll('.photo-card');
+        photoCards.forEach(card => {
+            card.addEventListener('click', () => this.showCardModal(card));
+            card.addEventListener('mouseenter', () => this.addCardHoverEffect(card));
+            card.addEventListener('mouseleave', () => this.removeCardHoverEffect(card));
             
             // Add touch interactions for mobile
-            item.addEventListener('touchstart', () => this.addTouchEffect(item));
-            item.addEventListener('touchend', () => this.removeTouchEffect(item));
+            card.addEventListener('touchstart', () => this.addCardTouchEffect(card));
         });
 
-        // Enhanced photo interactions
-        const photoItems = document.querySelectorAll('.photo-item');
-        photoItems.forEach(item => {
-            item.addEventListener('click', () => this.showPhotoModal(item));
-            item.addEventListener('touchstart', () => this.addPhotoTouchEffect(item));
-        });
-
-        // Enhanced quote animations
-        const quoteItems = document.querySelectorAll('.quote-item');
-        quoteItems.forEach(item => {
-            item.addEventListener('mouseenter', () => this.animateQuote(item));
-            item.addEventListener('touchstart', () => this.addQuoteTouchEffect(item));
-        });
-
-        // Add tap to reveal navigation
-        document.addEventListener('click', (e) => {
-            if (this.navigationHidden && !e.target.closest('.nav-btn') && !e.target.closest('.back-to-entrance')) {
-                this.showNavigation();
-            }
-        });
-
-        // Add double tap to reveal navigation
-        let lastTap = 0;
-        document.addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            if (tapLength < 500 && tapLength > 0 && this.navigationHidden) {
-                this.showNavigation();
-                e.preventDefault();
-            }
-            lastTap = currentTime;
-        });
-    }
-
-    setupShakeDetection() {
-        if (window.DeviceMotionEvent) {
-            let lastUpdate = 0;
-            let lastX = 0, lastY = 0, lastZ = 0;
-            const threshold = 15;
-            const timeThreshold = 1000;
-
-            window.addEventListener('devicemotion', (event) => {
-                const currentTime = new Date().getTime();
-                if ((currentTime - lastUpdate) > 100) {
-                    const diffTime = currentTime - lastUpdate;
-                    lastUpdate = currentTime;
-
-                    const acceleration = event.accelerationIncludingGravity;
-                    if (!acceleration) return;
-
-                    const speed = Math.abs(acceleration.x + acceleration.y + acceleration.z - lastX - lastY - lastZ) / diffTime * 10000;
-
-                    if (speed > threshold && this.navigationHidden && (currentTime - this.lastShakeTime) > timeThreshold) {
-                        this.showNavigation();
-                        this.lastShakeTime = currentTime;
-                        this.addShakeEffect();
-                    }
-
-                    lastX = acceleration.x;
-                    lastY = acceleration.y;
-                    lastZ = acceleration.z;
-                }
-            });
-        }
-    }
-
-    addShakeEffect() {
-        // Add visual shake effect
-        document.body.style.animation = 'shake 0.5s ease-in-out';
-        setTimeout(() => {
-            document.body.style.animation = '';
-        }, 500);
-
-        // Add vibration feedback
-        if ('vibrate' in navigator) {
-            navigator.vibrate([100, 50, 100]);
-        }
-
-        // Add sparkle effect
-        this.createShakeSparkles();
-    }
-
-    createShakeSparkles() {
-        const sparkleContainer = document.createElement('div');
-        sparkleContainer.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 200;
-        `;
+        // Special cards
+        const apologyCard = document.getElementById('apology-card');
+        const birthdayCard = document.getElementById('birthday-card');
         
-        for (let i = 0; i < 15; i++) {
-            setTimeout(() => {
-                this.createSparkle(sparkleContainer, true);
-            }, i * 50);
+        if (apologyCard) {
+            apologyCard.addEventListener('click', () => this.showApologyCard());
         }
         
-        document.body.appendChild(sparkleContainer);
-        
-        setTimeout(() => {
-            sparkleContainer.remove();
-        }, 2000);
+        if (birthdayCard) {
+            birthdayCard.addEventListener('click', () => this.showBirthdayCard());
+        }
+
+        // Add swipe gestures for mobile
+        this.setupSwipeGestures();
     }
 
-    hideNavigation() {
-        const nav = document.getElementById('museum-nav');
-        const backBtn = document.getElementById('back-to-entrance');
-        const shakeArea = document.getElementById('shake-area');
-        
-        if (nav) {
-            nav.classList.add('hidden');
-        }
-        
-        if (backBtn) {
-            backBtn.classList.add('visible');
-        }
-        
-        if (shakeArea) {
-            shakeArea.classList.add('active');
-        }
-        
-        this.navigationHidden = true;
-        
-        // Add hint text
-        this.addNavigationHint();
-    }
-
-    showNavigation() {
-        const nav = document.getElementById('museum-nav');
-        const backBtn = document.getElementById('back-to-entrance');
-        const shakeArea = document.getElementById('shake-area');
-        
-        if (nav) {
-            nav.classList.remove('hidden');
-        }
-        
-        if (backBtn) {
-            backBtn.classList.remove('visible');
-        }
-        
-        if (shakeArea) {
-            shakeArea.classList.remove('active');
-        }
-        
-        this.navigationHidden = false;
-        
-        // Remove hint text
-        this.removeNavigationHint();
-        
-        // Add entrance sparkles
-        this.createRoomSparkles(document.querySelector('.room.active'));
-    }
-
-    addNavigationHint() {
-        const hint = document.createElement('div');
-        hint.id = 'navigation-hint';
-        hint.innerHTML = '💡 Shake device or tap screen to show navigation';
-        hint.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            text-align: center;
-            z-index: 300;
-            animation: fadeIn 0.5s ease-out;
-            max-width: 80%;
-        `;
-        
-        document.body.appendChild(hint);
-        
-        setTimeout(() => {
-            if (hint.parentNode) {
-                hint.style.opacity = '0';
-                setTimeout(() => hint.remove(), 500);
-            }
-        }, 3000);
-    }
-
-    removeNavigationHint() {
-        const hint = document.getElementById('navigation-hint');
-        if (hint) {
-            hint.remove();
-        }
-    }
-
-    setupFloatingNav() {
-        // Add random floating movement to nav buttons
-        const navButtons = document.querySelectorAll('.nav-btn');
-        navButtons.forEach((btn, index) => {
-            this.addFloatingAnimation(btn, index);
-        });
-    }
-
-    addFloatingAnimation(button, index) {
-        const randomX = (Math.random() - 0.5) * 20;
-        const randomY = (Math.random() - 0.5) * 20;
-        const randomDelay = Math.random() * 2;
-        
-        button.style.animation = `float 6s ease-in-out infinite`;
-        button.style.animationDelay = `${randomDelay}s`;
-        
-        // Add subtle rotation
-        setInterval(() => {
-            const rotation = Math.sin(Date.now() * 0.001 + index) * 2;
-            button.style.transform += ` rotate(${rotation}deg)`;
-        }, 100);
-    }
-
-    addMobileEnhancements() {
-        // Add swipe gestures for room navigation
+    setupSwipeGestures() {
         let startX = 0;
         let startY = 0;
         
@@ -309,89 +95,25 @@ class MuseumOfUs {
                 this.handleSwipeNavigation(diffX > 0 ? 'next' : 'prev');
             }
         });
-
-        // Add vibration feedback for mobile
-        if ('vibrate' in navigator) {
-            const interactiveElements = document.querySelectorAll('.nav-btn, .memory-item, .photo-item, .quote-item');
-            interactiveElements.forEach(element => {
-                element.addEventListener('click', () => {
-                    navigator.vibrate(50);
-                });
-            });
-        }
     }
 
     handleSwipeNavigation(direction) {
-        const rooms = ['entrance', 'memories', 'quotes', 'photos', 'apology', 'birthday'];
-        const currentIndex = rooms.indexOf(this.currentRoom);
+        const categories = ['all', 'memories', 'dates', 'travel', 'special'];
+        const currentIndex = categories.indexOf(this.currentCategory);
         let nextIndex;
 
         if (direction === 'next') {
-            nextIndex = (currentIndex + 1) % rooms.length;
+            nextIndex = (currentIndex + 1) % categories.length;
         } else {
-            nextIndex = (currentIndex - 1 + rooms.length) % rooms.length;
+            nextIndex = (currentIndex - 1 + categories.length) % categories.length;
         }
 
-        this.switchRoom(rooms[nextIndex]);
+        this.filterCards(categories[nextIndex]);
     }
 
-    addButtonClickEffect(button) {
-        button.style.transform = 'scale(0.9)';
-        button.style.filter = 'brightness(1.2)';
-        
-        setTimeout(() => {
-            button.style.transform = '';
-            button.style.filter = '';
-        }, 200);
-    }
-
-    addTouchFeedback(button) {
-        button.style.transform = 'scale(0.95)';
-        button.style.background = 'rgba(255, 255, 255, 0.3)';
-    }
-
-    removeTouchFeedback(button) {
-        setTimeout(() => {
-            button.style.transform = '';
-            button.style.background = '';
-        }, 150);
-    }
-
-    addTouchEffect(element) {
-        element.style.transform = 'scale(0.98)';
-        element.style.boxShadow = '0 8px 25px rgba(0,0,0,0.4)';
-    }
-
-    removeTouchEffect(element) {
-        setTimeout(() => {
-            element.style.transform = '';
-            element.style.boxShadow = '';
-        }, 200);
-    }
-
-    addPhotoTouchEffect(element) {
-        element.style.transform = 'scale(1.05)';
-        element.style.filter = 'brightness(1.1)';
-        
-        setTimeout(() => {
-            element.style.transform = '';
-            element.style.filter = '';
-        }, 300);
-    }
-
-    addQuoteTouchEffect(element) {
-        element.style.transform = 'scale(1.08) rotate(2deg)';
-        element.style.boxShadow = '0 15px 40px rgba(255, 215, 0, 0.4)';
-        
-        setTimeout(() => {
-            element.style.transform = '';
-            element.style.boxShadow = '';
-        }, 400);
-    }
-
-    enterMuseum() {
+    enterAlbum() {
         const welcomeScreen = document.getElementById('welcome-screen');
-        const museumContainer = document.getElementById('museum-container');
+        const albumContainer = document.getElementById('album-container');
         
         // Enhanced entrance animation
         welcomeScreen.style.opacity = '0';
@@ -399,9 +121,9 @@ class MuseumOfUs {
         
         setTimeout(() => {
             welcomeScreen.style.display = 'none';
-            museumContainer.classList.remove('hidden');
-            museumContainer.style.opacity = '1';
-            museumContainer.style.transform = 'scale(1)';
+            albumContainer.classList.remove('hidden');
+            albumContainer.style.opacity = '1';
+            albumContainer.style.transform = 'scale(1)';
         }, 1000);
 
         // Add enhanced entrance effects
@@ -409,14 +131,25 @@ class MuseumOfUs {
     }
 
     animateEntrance() {
-        const entranceContent = document.querySelector('#entrance .room-content');
-        entranceContent.style.animation = 'fadeInUp 1s ease-out';
-        
-        // Add enhanced sparkle effect
+        // Add entrance sparkle effect
         this.createEnhancedSparkles();
         
         // Add floating particles
         this.createFloatingParticles();
+        
+        // Animate cards entrance
+        this.animateCardsEntrance();
+    }
+
+    animateCardsEntrance() {
+        const cards = document.querySelectorAll('.photo-card');
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.animation = 'fadeInUp 0.6s ease-out';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
     }
 
     createEnhancedSparkles() {
@@ -494,61 +227,42 @@ class MuseumOfUs {
         }, 4000);
     }
 
-    switchRoom(roomName) {
-        this.currentRoom = roomName;
+    filterCards(category) {
+        this.currentCategory = category;
         
-        // Update navigation with enhanced effects
+        // Update navigation
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.classList.remove('active');
         });
-        document.querySelector(`[data-room="${roomName}"]`).classList.add('active');
+        document.querySelector(`[data-category="${category}"]`).classList.add('active');
 
-        // Hide all rooms with fade effect
-        document.querySelectorAll('.room').forEach(room => {
-            room.style.opacity = '0';
-            room.style.transform = 'translateY(20px)';
-            room.classList.remove('active');
+        // Filter cards
+        const cards = document.querySelectorAll('.photo-card');
+        cards.forEach(card => {
+            const cardCategory = card.dataset.category;
+            
+            if (category === 'all' || cardCategory === category) {
+                card.classList.remove('hidden');
+                card.style.animation = 'fadeInUp 0.6s ease-out';
+            } else {
+                card.classList.add('hidden');
+            }
         });
 
-        // Show selected room with enhanced animation
-        const targetRoom = document.getElementById(roomName);
-        targetRoom.classList.add('active');
-        
-        setTimeout(() => {
-            targetRoom.style.opacity = '1';
-            targetRoom.style.transform = 'translateY(0)';
-        }, 100);
-
-        // Special effects for birthday room
-        if (roomName === 'birthday' && !this.isBirthdayRoomActive) {
-            this.activateBirthdayRoom();
-        }
-
-        // Add room transition effect
-        this.addRoomTransitionEffect(targetRoom);
+        // Add filter sparkles
+        this.createFilterSparkles();
     }
 
-    addRoomTransitionEffect(room) {
-        room.style.animation = 'fadeIn 0.6s ease-in-out';
-        
-        // Add entrance sparkles for each room
-        this.createRoomSparkles(room);
-        
-        setTimeout(() => {
-            room.style.animation = '';
-        }, 600);
-    }
-
-    createRoomSparkles(room) {
+    createFilterSparkles() {
         const sparkleContainer = document.createElement('div');
         sparkleContainer.style.cssText = `
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 10;
+            z-index: 100;
         `;
         
         for (let i = 0; i < 10; i++) {
@@ -557,51 +271,33 @@ class MuseumOfUs {
             }, i * 100);
         }
         
-        room.appendChild(sparkleContainer);
+        document.body.appendChild(sparkleContainer);
         
         setTimeout(() => {
             sparkleContainer.remove();
         }, 2000);
     }
 
-    addHoverEffect(element) {
-        element.style.transform = 'translateY(-8px) scale(1.02)';
-        element.style.boxShadow = '0 15px 40px rgba(0,0,0,0.3)';
-        element.style.border = '2px solid rgba(255, 255, 255, 0.5)';
-    }
-
-    removeHoverEffect(element) {
-        element.style.transform = '';
-        element.style.boxShadow = '';
-        element.style.border = '';
-    }
-
-    animateQuote(element) {
-        element.style.transform = 'scale(1.08) rotate(1deg)';
-        element.style.boxShadow = '0 15px 40px rgba(255, 215, 0, 0.3)';
+    showCardModal(card) {
+        const cardInfo = card.querySelector('.card-info');
+        const title = cardInfo.querySelector('h3').textContent;
+        const date = cardInfo.querySelector('.card-date').textContent;
+        const description = cardInfo.querySelector('.card-description').textContent;
+        const emoji = card.querySelector('.photo-emoji').textContent;
         
-        setTimeout(() => {
-            element.style.transform = '';
-            element.style.boxShadow = '';
-        }, 300);
+        this.createCardModal(title, date, description, emoji);
     }
 
-    showPhotoModal(photoItem) {
-        const placeholder = photoItem.querySelector('.photo-placeholder');
-        const emoji = placeholder.querySelector('span').textContent;
-        const title = placeholder.querySelector('p').textContent;
-        
-        this.createEnhancedPhotoModal(emoji, title);
-    }
-
-    createEnhancedPhotoModal(emoji, title) {
+    createCardModal(title, date, description, emoji) {
         const modal = document.createElement('div');
-        modal.className = 'photo-modal';
+        modal.className = 'card-modal';
         modal.innerHTML = `
             <div class="modal-content">
                 <div class="modal-emoji">${emoji}</div>
                 <h3>${title}</h3>
-                <p>Tap to add your own photo here!</p>
+                <p class="modal-date">${date}</p>
+                <p class="modal-description">${description}</p>
+                <p class="modal-hint">💡 Tap to add your own photo here!</p>
                 <button class="close-modal">Close</button>
             </div>
         `;
@@ -629,13 +325,18 @@ class MuseumOfUs {
             text-align: center;
             color: white;
             border: 1px solid rgba(255,255,255,0.2);
-            max-width: 300px;
+            max-width: 350px;
             margin: 1rem;
         `;
         
-        modalContent.querySelector('.modal-emoji').style.fontSize = '3rem';
+        modalContent.querySelector('.modal-emoji').style.fontSize = '4rem';
         modalContent.querySelector('h3').style.marginBottom = '1rem';
-        modalContent.querySelector('p').style.marginBottom = '1.5rem';
+        modalContent.querySelector('.modal-date').style.marginBottom = '1rem';
+        modalContent.querySelector('.modal-date').style.color = '#a8e6cf';
+        modalContent.querySelector('.modal-description').style.marginBottom = '1.5rem';
+        modalContent.querySelector('.modal-hint').style.marginBottom = '2rem';
+        modalContent.querySelector('.modal-hint').style.fontSize = '0.9rem';
+        modalContent.querySelector('.modal-hint').style.opacity = '0.8';
         
         const closeBtn = modalContent.querySelector('.close-modal');
         closeBtn.style.cssText = `
@@ -662,20 +363,95 @@ class MuseumOfUs {
         document.body.appendChild(modal);
     }
 
-    activateBirthdayRoom() {
-        this.isBirthdayRoomActive = true;
+    showApologyCard() {
+        if (!this.isApologyCardActive) {
+            this.isApologyCardActive = true;
+            const apologyCard = document.getElementById('apology-card');
+            if (apologyCard) {
+                apologyCard.classList.add('visible');
+                this.createApologyEffects();
+            }
+        }
+    }
+
+    showBirthdayCard() {
+        if (!this.isBirthdayCardActive) {
+            this.isBirthdayCardActive = true;
+            const birthdayCard = document.getElementById('birthday-card');
+            if (birthdayCard) {
+                birthdayCard.classList.add('visible');
+                this.createBirthdayEffects();
+            }
+        }
+    }
+
+    createApologyEffects() {
+        // Add floating hearts
+        this.createFloatingHearts();
         
-        // Enhanced confetti
-        this.startEnhancedConfetti();
+        // Add vibration feedback
+        if ('vibrate' in navigator) {
+            navigator.vibrate([100, 50, 100]);
+        }
+    }
+
+    createBirthdayEffects() {
+        // Start confetti
+        this.startConfetti();
         
-        // Animate cake with bounce
+        // Animate cake
         this.animateCake();
         
         // Add birthday effects
         this.addBirthdayEffects();
     }
 
-    startEnhancedConfetti() {
+    createFloatingHearts() {
+        const heartContainer = document.createElement('div');
+        heartContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 150;
+        `;
+        
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                this.createFloatingHeart(heartContainer);
+            }, i * 200);
+        }
+        
+        document.body.appendChild(heartContainer);
+        
+        setTimeout(() => {
+            heartContainer.remove();
+        }, 8000);
+    }
+
+    createFloatingHeart(container) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.style.cssText = `
+            position: absolute;
+            font-size: 1.5rem;
+            left: ${Math.random() * 100}%;
+            top: 100%;
+            animation: floatingHeart 4s ease-out forwards;
+        `;
+        
+        container.appendChild(heart);
+        
+        setTimeout(() => {
+            if (heart.parentNode) {
+                heart.remove();
+            }
+        }, 4000);
+    }
+
+    startConfetti() {
         const confettiContainer = document.querySelector('.confetti-container');
         if (!confettiContainer) return;
         
@@ -732,58 +508,108 @@ class MuseumOfUs {
     }
 
     addBirthdayEffects() {
-        const birthdayMessage = document.querySelector('.birthday-message');
-        if (birthdayMessage) {
-            birthdayMessage.style.animation = 'glow 2s ease-in-out infinite alternate';
+        // Add sparkle effect to birthday card
+        const birthdayCard = document.getElementById('birthday-card');
+        if (birthdayCard) {
+            birthdayCard.style.animation = 'glow 2s ease-in-out infinite alternate';
         }
-        
-        // Add floating hearts around the cake
-        this.createBirthdayHearts();
     }
 
-    createBirthdayHearts() {
-        const heartContainer = document.createElement('div');
-        heartContainer.style.cssText = `
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10;
-        `;
+    goHome() {
+        // Hide special cards
+        const apologyCard = document.getElementById('apology-card');
+        const birthdayCard = document.getElementById('birthday-card');
         
-        for (let i = 0; i < 20; i++) {
+        if (apologyCard) {
+            apologyCard.classList.remove('visible');
+            this.isApologyCardActive = false;
+        }
+        
+        if (birthdayCard) {
+            birthdayCard.classList.remove('visible');
+            this.isBirthdayCardActive = false;
+        }
+        
+        // Reset to all cards
+        this.filterCards('all');
+    }
+
+    addButtonClickEffect(button) {
+        button.style.transform = 'scale(0.9)';
+        button.style.filter = 'brightness(1.2)';
+        
+        setTimeout(() => {
+            button.style.transform = '';
+            button.style.filter = '';
+        }, 200);
+    }
+
+    addTouchFeedback(button) {
+        button.style.transform = 'scale(0.95)';
+        button.style.background = 'rgba(255, 255, 255, 0.3)';
+    }
+
+    removeTouchFeedback(button) {
+        setTimeout(() => {
+            button.style.transform = '';
+            button.style.background = '';
+        }, 150);
+    }
+
+    addCardHoverEffect(card) {
+        card.style.transform = 'translateY(-15px) scale(1.05) rotateY(5deg)';
+        card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)';
+        card.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+    }
+
+    removeCardHoverEffect(card) {
+        card.style.transform = '';
+        card.style.boxShadow = '';
+        card.style.borderColor = '';
+    }
+
+    addCardTouchEffect(card) {
+        card.style.transform = 'scale(1.05)';
+        card.style.filter = 'brightness(1.1)';
+        
+        setTimeout(() => {
+            card.style.transform = '';
+            card.style.filter = '';
+        }, 300);
+    }
+
+    setupCardAnimations() {
+        // Add staggered entrance animation to cards
+        const cards = document.querySelectorAll('.photo-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            
             setTimeout(() => {
-                this.createFloatingHeart(heartContainer);
-            }, i * 200);
-        }
-        
-        document.querySelector('#birthday').appendChild(heartContainer);
-        
-        setTimeout(() => {
-            heartContainer.remove();
-        }, 8000);
+                card.style.transition = 'all 0.6s ease-out';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
     }
 
-    createFloatingHeart(container) {
-        const heart = document.createElement('div');
-        heart.innerHTML = '❤️';
-        heart.style.cssText = `
-            position: absolute;
-            font-size: 1.5rem;
-            left: ${Math.random() * 100}%;
-            top: 100%;
-            animation: floatingHeart 4s ease-out forwards;
-        `;
-        
-        container.appendChild(heart);
-        
-        setTimeout(() => {
-            if (heart.parentNode) {
-                heart.remove();
+    setupSpecialCards() {
+        // Add click listeners to show special cards
+        const cards = document.querySelectorAll('.photo-card');
+        cards.forEach(card => {
+            const category = card.dataset.category;
+            const date = card.dataset.date;
+            
+            // Show apology card for special category
+            if (category === 'special' && date === '2024-08-30') {
+                card.addEventListener('click', () => this.showApologyCard());
             }
-        }, 4000);
+            
+            // Show birthday card for special category
+            if (category === 'special' && date === '2024-04-10') {
+                card.addEventListener('click', () => this.showBirthdayCard());
+            }
+        });
     }
 
     createSparkles() {
@@ -831,47 +657,10 @@ class MuseumOfUs {
         }, 2000);
     }
 
-    setup3DEffects() {
-        // Enhanced 3D tilt effect for mobile
-        const memoryItems = document.querySelectorAll('.memory-item');
-        memoryItems.forEach(item => {
-            item.addEventListener('mousemove', (e) => {
-                this.add3DTilt(item, e);
-            });
-            
-            item.addEventListener('mouseleave', () => {
-                this.reset3DTilt(item);
-            });
-        });
-
-        const quoteItems = document.querySelectorAll('.quote-item');
-        quoteItems.forEach(item => {
-            item.addEventListener('mousemove', (e) => {
-                this.add3DTilt(item, e);
-            });
-            
-            item.addEventListener('mouseleave', () => {
-                this.reset3DTilt(item);
-            });
-        });
-    }
-
-    add3DTilt(element, event) {
-        const rect = element.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 15;
-        const rotateY = (centerX - x) / 15;
-        
-        element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-    }
-
-    reset3DTilt(element) {
-        element.style.transform = '';
+    createConfetti() {
+        // Initialize confetti container
+        const confettiContainer = document.querySelector('.confetti-container');
+        if (!confettiContainer) return;
     }
 }
 
@@ -952,6 +741,17 @@ const enhancedStyles = `
         }
     }
     
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
     @keyframes float {
         0%, 100% {
             transform: translateY(0) rotate(0deg);
@@ -985,9 +785,9 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = enhancedStyles;
 document.head.appendChild(styleSheet);
 
-// Initialize the museum when DOM is loaded
+// Initialize the album when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new MuseumOfUs();
+    new FloatingPhotoAlbum();
 });
 
 // Enhanced loading animation
@@ -1013,7 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     
     const loadingText = document.createElement('div');
-    loadingText.textContent = 'Loading The Museum of Us...';
+    loadingText.textContent = 'Loading Our Love Story...';
     loadingText.style.marginBottom = '1rem';
     
     const loadingHearts = document.createElement('div');

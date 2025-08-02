@@ -118,12 +118,13 @@ body::before {
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
-/* Museum Container */
-.museum-container {
+/* Book Container */
+.book-container {
     position: relative;
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     transition: all 0.5s ease;
+    padding: 20px;
 }
 
 .hidden {
@@ -131,227 +132,239 @@ body::before {
     pointer-events: none;
 }
 
-/* Floating Navigation */
-.museum-nav {
+/* Book Navigation */
+.book-nav {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
     z-index: 100;
-    transition: opacity 0.5s ease;
-}
-
-.museum-nav.hidden {
-    opacity: 0;
-    pointer-events: none;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .nav-btn {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    padding: 0.8rem 1.2rem;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    font-weight: 600;
-    font-size: 0.9rem;
-    pointer-events: auto;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    animation: float 6s ease-in-out infinite;
-}
-
-.nav-btn:hover,
-.nav-btn.active {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-    border-color: rgba(255, 255, 255, 0.6);
-}
-
-/* Random positions for nav buttons */
-.nav-btn[data-room="entrance"] {
-    top: 15%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.nav-btn[data-room="memories"] {
-    top: 25%;
-    right: 15%;
-    animation-delay: 1s;
-}
-
-.nav-btn[data-room="quotes"] {
-    top: 45%;
-    left: 8%;
-    animation-delay: 2s;
-}
-
-.nav-btn[data-room="photos"] {
-    top: 55%;
-    right: 12%;
-    animation-delay: 3s;
-}
-
-.nav-btn[data-room="apology"] {
-    top: 75%;
-    left: 15%;
-    animation-delay: 4s;
-}
-
-.nav-btn[data-room="birthday"] {
-    top: 85%;
-    right: 10%;
-    animation-delay: 5s;
-}
-
-/* Back to Entrance Button */
-.back-to-entrance {
-    position: fixed;
-    top: 20px;
-    right: 20px;
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: none;
     padding: 0.8rem 1.2rem;
-    border-radius: 25px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
-    font-size: 0.9rem;
-    z-index: 150;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-20px);
-    animation: float 4s ease-in-out infinite;
+    font-size: 1.2rem;
+    min-width: 50px;
 }
 
-.back-to-entrance.visible {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
-}
-
-.back-to-entrance:hover {
+.nav-btn:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* Shake Detection Area */
-.shake-area {
-    position: fixed;
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.page-indicator {
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* Book Pages Container */
+.book-pages {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 120px);
+    margin-top: 80px;
+    perspective: 1000px;
+}
+
+/* Book Pages */
+.book-page {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: 50;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.6s ease-in-out;
+    transform-style: preserve-3d;
 }
 
-.shake-area.active {
-    pointer-events: auto;
+.book-page.active {
+    opacity: 1;
+    transform: translateX(0);
 }
 
-/* Room Container */
-.room-container {
-    padding-top: 20px;
-    min-height: 100vh;
+.book-page.prev {
+    transform: translateX(-100%);
 }
 
-.room {
-    display: none;
-    min-height: 100vh;
-    padding: 1rem;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.room.active {
-    display: block;
-}
-
-.room-content {
-    max-width: 100%;
-    margin: 0 auto;
+.page-content {
+    height: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
     color: white;
-    text-align: center;
-    padding: 0 1rem;
+    position: relative;
 }
 
-.room-content h2 {
+/* Cover Page */
+.cover-page {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.cover-title h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.cover-title .subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+}
+
+.cover-hearts {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.cover-hearts span {
+    font-size: 2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.cover-hearts span:nth-child(2) { animation-delay: 0.5s; }
+.cover-hearts span:nth-child(3) { animation-delay: 1s; }
+.cover-hearts span:nth-child(4) { animation-delay: 1.5s; }
+
+.cover-instruction {
+    margin-top: 2rem;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Page Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.page-header h2 {
     font-family: 'Dancing Script', cursive;
     font-size: 2.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Memory Timeline */
-.memory-timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
-.memory-item {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    animation: slideInUp 0.6s ease-out;
-}
-
-.memory-item:nth-child(1) { animation-delay: 0.1s; }
-.memory-item:nth-child(2) { animation-delay: 0.2s; }
-.memory-item:nth-child(3) { animation-delay: 0.3s; }
-.memory-item:nth-child(4) { animation-delay: 0.4s; }
-
-.memory-item:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-}
-
-.memory-date {
-    font-weight: 600;
+.page-header .date {
+    font-size: 1rem;
     color: #ffd93d;
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
+    font-weight: 500;
 }
 
-.memory-content h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.8rem;
-    color: #ff6b6b;
+/* Memory Pages */
+.memory-page {
+    justify-content: space-between;
 }
 
-.memory-content p {
-    line-height: 1.6;
-    font-size: 0.95rem;
-}
-
-/* Quotes Gallery */
-.quotes-gallery {
+.memory-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 2rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.memory-image {
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.photo-emoji {
+    font-size: 4rem;
+    animation: emojiFloat 3s ease-in-out infinite;
+}
+
+.memory-text {
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+.memory-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.memory-hearts {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.memory-hearts span {
+    font-size: 1.5rem;
+    animation: heartBeat 2s ease-in-out infinite;
+}
+
+.memory-hearts span:nth-child(2) { animation-delay: 0.5s; }
+.memory-hearts span:nth-child(3) { animation-delay: 1s; }
+
+/* Quotes Page */
+.quotes-page {
+    justify-content: center;
+}
+
+.quotes-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .quote-item {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
+    padding: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
     animation: slideInUp 0.6s ease-out;
 }
 
@@ -359,53 +372,57 @@ body::before {
 .quote-item:nth-child(2) { animation-delay: 0.2s; }
 .quote-item:nth-child(3) { animation-delay: 0.3s; }
 .quote-item:nth-child(4) { animation-delay: 0.4s; }
-.quote-item:nth-child(5) { animation-delay: 0.5s; }
 
 .quote-item:hover {
-    transform: scale(1.05) rotate(1deg);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .quote-item blockquote {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-style: italic;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
     line-height: 1.6;
 }
 
 .quote-item cite {
     color: #ffd93d;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
-/* Photo Gallery */
-.photo-gallery {
+/* Gallery Page */
+.gallery-page {
+    justify-content: center;
+}
+
+.gallery-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.photo-item {
+.gallery-item {
     aspect-ratio: 1;
     transition: all 0.3s ease;
     animation: slideInUp 0.6s ease-out;
 }
 
-.photo-item:nth-child(1) { animation-delay: 0.1s; }
-.photo-item:nth-child(2) { animation-delay: 0.2s; }
-.photo-item:nth-child(3) { animation-delay: 0.3s; }
-.photo-item:nth-child(4) { animation-delay: 0.4s; }
-.photo-item:nth-child(5) { animation-delay: 0.5s; }
-.photo-item:nth-child(6) { animation-delay: 0.6s; }
+.gallery-item:nth-child(1) { animation-delay: 0.1s; }
+.gallery-item:nth-child(2) { animation-delay: 0.2s; }
+.gallery-item:nth-child(3) { animation-delay: 0.3s; }
+.gallery-item:nth-child(4) { animation-delay: 0.4s; }
+.gallery-item:nth-child(5) { animation-delay: 0.5s; }
+.gallery-item:nth-child(6) { animation-delay: 0.6s; }
 
 .photo-placeholder {
     width: 100%;
     height: 100%;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    border-radius: 20px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -416,12 +433,12 @@ body::before {
 }
 
 .photo-placeholder:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .photo-placeholder span {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -431,50 +448,65 @@ body::before {
     text-align: center;
 }
 
-/* Apology Room */
+/* Apology Page */
+.apology-page {
+    justify-content: center;
+    text-align: center;
+}
+
 .apology-content {
-    max-width: 100%;
+    max-width: 600px;
     margin: 0 auto;
-    margin-top: 2rem;
+}
+
+.apology-image {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 107, 107, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    border: 2px solid rgba(255, 107, 107, 0.4);
+}
+
+.apology-image .photo-emoji {
+    font-size: 3rem;
 }
 
 .apology-text p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     line-height: 1.8;
-    margin-bottom: 1.2rem;
-    text-align: center;
-    animation: slideInUp 0.6s ease-out;
+    margin-bottom: 1.5rem;
 }
-
-.apology-text p:nth-child(1) { animation-delay: 0.1s; }
-.apology-text p:nth-child(2) { animation-delay: 0.2s; }
-.apology-text p:nth-child(3) { animation-delay: 0.3s; }
-.apology-text p:nth-child(4) { animation-delay: 0.4s; }
 
 .apology-hearts {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-top: 2rem;
-    flex-wrap: wrap;
 }
 
-.apology-hearts .heart {
+.apology-hearts span {
     font-size: 1.8rem;
     animation: float 3s ease-in-out infinite;
 }
 
-.apology-hearts .heart:nth-child(2) { animation-delay: 0.5s; }
-.apology-hearts .heart:nth-child(3) { animation-delay: 1s; }
-.apology-hearts .heart:nth-child(4) { animation-delay: 1.5s; }
-.apology-hearts .heart:nth-child(5) { animation-delay: 2s; }
+.apology-hearts span:nth-child(2) { animation-delay: 0.5s; }
+.apology-hearts span:nth-child(3) { animation-delay: 1s; }
+.apology-hearts span:nth-child(4) { animation-delay: 1.5s; }
+.apology-hearts span:nth-child(5) { animation-delay: 2s; }
 
-/* Birthday Room */
-.birthday-celebration {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
+/* Birthday Page */
+.birthday-page {
+    justify-content: center;
+    text-align: center;
+}
+
+.birthday-content {
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .birthday-cake {
@@ -484,65 +516,71 @@ body::before {
 }
 
 .cake-layer {
-    width: 150px;
-    height: 30px;
+    width: 120px;
+    height: 25px;
     background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-    border-radius: 10px;
-    margin-bottom: 4px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    margin-bottom: 3px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .cake-layer:nth-child(2) {
-    width: 135px;
+    width: 100px;
     background: linear-gradient(45deg, #ffd93d, #ffb347);
 }
 
 .cake-layer:nth-child(3) {
-    width: 120px;
+    width: 80px;
     background: linear-gradient(45deg, #a8e6cf, #88d8c0);
 }
 
 .candle {
-    width: 6px;
-    height: 25px;
+    width: 4px;
+    height: 20px;
     background: #ffd93d;
     position: absolute;
-    top: -25px;
+    top: -20px;
     left: 50%;
     transform: translateX(-50%);
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .flame {
-    width: 10px;
-    height: 15px;
+    width: 8px;
+    height: 12px;
     background: #ff6b6b;
     position: absolute;
-    top: -40px;
+    top: -32px;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     animation: flicker 1s ease-in-out infinite alternate;
 }
 
-.birthday-message {
-    text-align: center;
-    max-width: 100%;
-    animation: slideInUp 0.6s ease-out;
-}
-
-.birthday-message h3 {
-    font-size: 1.6rem;
-    margin-bottom: 1.2rem;
-    color: #ffd93d;
-}
-
 .birthday-message p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
 }
 
+.birthday-hearts {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.birthday-hearts span {
+    font-size: 1.8rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.birthday-hearts span:nth-child(2) { animation-delay: 0.5s; }
+.birthday-hearts span:nth-child(3) { animation-delay: 1s; }
+.birthday-hearts span:nth-child(4) { animation-delay: 1.5s; }
+.birthday-hearts span:nth-child(5) { animation-delay: 2s; }
+
+/* Confetti Container */
 .confetti-container {
     position: fixed;
     top: 0;
@@ -603,17 +641,6 @@ body::before {
     }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 @keyframes float {
     0%, 100% {
         transform: translateY(0) rotate(0deg);
@@ -626,6 +653,24 @@ body::before {
     }
     75% {
         transform: translateY(-12px) rotate(0.5deg);
+    }
+}
+
+@keyframes emojiFloat {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-5px) scale(1.1);
+    }
+}
+
+@keyframes heartBeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
     }
 }
 
@@ -727,18 +772,6 @@ body::before {
     }
 }
 
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    10%, 30%, 50%, 70%, 90% {
-        transform: translateX(-5px);
-    }
-    20%, 40%, 60%, 80% {
-        transform: translateX(5px);
-    }
-}
-
 /* Mobile-specific enhancements */
 @media (max-width: 768px) {
     .main-title {
@@ -749,59 +782,71 @@ body::before {
         font-size: 1.1rem;
     }
     
+    .book-nav {
+        padding: 0.8rem 1.5rem;
+        gap: 1rem;
+    }
+    
     .nav-btn {
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+        min-width: 40px;
+    }
+    
+    .page-indicator {
         font-size: 0.8rem;
-        padding: 0.7rem 1rem;
+        min-width: 100px;
     }
     
-    .back-to-entrance {
-        font-size: 0.8rem;
-        padding: 0.7rem 1rem;
-        top: 15px;
-        right: 15px;
+    .book-pages {
+        height: calc(100vh - 100px);
+        margin-top: 70px;
     }
     
-    .room-content h2 {
-        font-size: 2rem;
+    .page-content {
+        padding: 1.5rem;
     }
     
-    .memory-item,
-    .quote-item {
-        padding: 1.2rem;
-    }
-    
-    .photo-gallery {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.8rem;
-    }
-    
-    .photo-placeholder span {
+    .cover-title h1 {
         font-size: 2.5rem;
     }
     
-    .photo-placeholder p {
-        font-size: 0.8rem;
+    .page-header h2 {
+        font-size: 2rem;
     }
     
-    .birthday-cake .cake-layer {
+    .memory-image {
         width: 120px;
-        height: 25px;
+        height: 120px;
     }
     
-    .birthday-cake .cake-layer:nth-child(2) {
-        width: 105px;
+    .photo-emoji {
+        font-size: 3rem;
     }
     
-    .birthday-cake .cake-layer:nth-child(3) {
-        width: 90px;
+    .memory-text p {
+        font-size: 1rem;
     }
     
-    .birthday-message h3 {
-        font-size: 1.4rem;
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .quote-item {
+        padding: 1.5rem;
+    }
+    
+    .quote-item blockquote {
+        font-size: 1.1rem;
+    }
+    
+    .apology-text p {
+        font-size: 1.1rem;
     }
     
     .birthday-message p {
-        font-size: 0.9rem;
+        font-size: 1.1rem;
     }
 }
 
@@ -812,27 +857,39 @@ body::before {
     }
     
     .nav-btn {
-        font-size: 0.7rem;
-        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+        padding: 0.5rem 0.8rem;
+        min-width: 35px;
     }
     
-    .back-to-entrance {
+    .page-indicator {
         font-size: 0.7rem;
-        padding: 0.6rem 0.8rem;
+        min-width: 80px;
     }
     
-    .room-content h2 {
+    .cover-title h1 {
+        font-size: 2rem;
+    }
+    
+    .page-header h2 {
         font-size: 1.8rem;
     }
     
-    .photo-gallery {
+    .memory-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .photo-emoji {
+        font-size: 2.5rem;
+    }
+    
+    .gallery-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
     
-    .photo-placeholder {
-        aspect-ratio: 1;
-        max-width: 200px;
-        margin: 0 auto;
+    .page-content {
+        padding: 1rem;
     }
 } 
