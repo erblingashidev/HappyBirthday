@@ -1,51 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    overflow: hidden;
-    font-family: 'Georgia', serif;
-    background: #fef6f9;
-  }
-  
-  .book {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .page {
-    flex: 0 0 100vw;
-    height: 100vh;
-    scroll-snap-align: start;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    box-sizing: border-box;
-    transition: background 0.5s;
-  }
-  
-  .page:nth-child(even) {
-    background-color: #fff0f5;
-  }
-  .page:nth-child(odd) {
-    background-color: #ffeef0;
-  }
-  
-  .page img {
-    width: 80%;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    margin-top: 1rem;
-  }
-  
-  blockquote {
-    font-style: italic;
-    font-size: 1.4rem;
-    color: #b03060;
-    text-align: center;
-    max-width: 80%;
-  }
-  
+  font-family: 'Playfair Display', serif;
+  background: linear-gradient(to right, #fef6f9, #fff);
+  overflow: hidden;
+}
+
+.book {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.page {
+  flex: 0 0 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 30px rgba(255, 200, 230, 0.3);
+  animation: fadeIn 1s ease-in;
+}
+
+.page h1, .page h2, .page p, blockquote {
+  text-align: center;
+  color: #a83263;
+  margin-bottom: 1.5rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+  animation: textFade 1.2s ease forwards;
+}
+
+h2 {
+  font-size: 1.6rem;
+  animation: textFade 1.5s ease forwards;
+}
+
+p, blockquote {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.6;
+  max-width: 85%;
+  opacity: 0;
+  animation: slideUp 1s forwards 0.5s;
+}
+
+blockquote {
+  font-style: italic;
+  color: #a83263;
+}
+
+img {
+  width: 80%;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeInImg 1s ease forwards 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes textFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInImg {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Hide scrollbar */
+.book::-webkit-scrollbar {
+  display: none;
+}
+.book {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
