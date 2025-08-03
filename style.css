@@ -64,25 +64,35 @@ p, blockquote {
   color: #4b2c35;
   line-height: 1.8;
   max-width: 85%;
-  transform: rotate(-5deg) translate(-10px, 5px);
   white-space: pre-wrap;
+  opacity: 0;
+  animation: fadeWrite 2s ease forwards;
 }
 
-.typewriter {
-  overflow: hidden;
-  border-right: 0.15em solid #a83263;
-  white-space: nowrap;
-  animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+.page:nth-of-type(2) blockquote {
+  transform: rotate(-3deg) translate(-5px, 5px);
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+.page:nth-of-type(3) p {
+  transform: rotate(2deg) translate(10px, -8px);
 }
 
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: #a83263; }
+.page:nth-of-type(4) p {
+  transform: rotate(-4deg) translate(-15px, 12px);
+}
+
+.page:nth-of-type(5) blockquote {
+  transform: rotate(3deg) translate(8px, 0);
+}
+
+.page:nth-of-type(6) h2,
+.page:nth-of-type(6) p {
+  transform: rotate(-2deg) translate(-5px, 6px);
+}
+
+@keyframes fadeWrite {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 img {
@@ -103,14 +113,34 @@ img {
   background: white;
   padding: 10px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  transform: rotate(-3deg);
   width: 140px;
   text-align: center;
   font-family: 'Dancing Script', cursive;
   font-size: 1rem;
+  opacity: 0;
+  transform: scale(0.8) rotate(-5deg);
+  animation: popIn 1s ease forwards;
+}
+
+.polaroid:nth-child(2) {
+  transform: scale(0.8) rotate(4deg);
+  animation-delay: 0.3s;
+}
+
+.polaroid:nth-child(3) {
+  transform: scale(0.8) rotate(-8deg);
+  animation-delay: 0.6s;
 }
 
 .polaroid img {
   width: 100%;
   border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(var(--rotate, 0deg));
+  }
 }
