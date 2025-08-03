@@ -8,6 +8,23 @@ body {
   font-family: 'Playfair Display', serif;
   background: linear-gradient(to right, #fef6f9, #fff);
   overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('sparkle.svg') repeat;
+  animation: floatBg 30s linear infinite;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+@keyframes floatBg {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 1000px; }
 }
 
 .book {
@@ -32,9 +49,9 @@ body {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   box-shadow: inset 0 0 30px rgba(255, 200, 230, 0.3);
-  transition: transform 1s ease, opacity 1s ease;
   opacity: 0;
   transform: translateX(100%);
+  transition: transform 1s ease, opacity 1s ease;
 }
 
 .page.active {
@@ -42,6 +59,18 @@ body {
   opacity: 1;
   transform: translateX(0);
   z-index: 1;
+  animation: flipIn 1s ease forwards;
+}
+
+@keyframes flipIn {
+  from {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(0);
+    opacity: 1;
+  }
 }
 
 .page h1, .page h2, .page p, blockquote {
@@ -67,27 +96,6 @@ p, blockquote {
   white-space: pre-wrap;
   opacity: 0;
   animation: fadeWrite 2s ease forwards;
-}
-
-.page:nth-of-type(2) blockquote {
-  transform: rotate(-3deg) translate(-5px, 5px);
-}
-
-.page:nth-of-type(3) p {
-  transform: rotate(2deg) translate(10px, -8px);
-}
-
-.page:nth-of-type(4) p {
-  transform: rotate(-4deg) translate(-15px, 12px);
-}
-
-.page:nth-of-type(5) blockquote {
-  transform: rotate(3deg) translate(8px, 0);
-}
-
-.page:nth-of-type(6) h2,
-.page:nth-of-type(6) p {
-  transform: rotate(-2deg) translate(-5px, 6px);
 }
 
 @keyframes fadeWrite {
@@ -120,6 +128,7 @@ img {
   opacity: 0;
   transform: scale(0.8) rotate(-5deg);
   animation: popIn 1s ease forwards;
+  transition: transform 0.3s ease;
 }
 
 .polaroid:nth-child(2) {
@@ -130,6 +139,11 @@ img {
 .polaroid:nth-child(3) {
   transform: scale(0.8) rotate(-8deg);
   animation-delay: 0.6s;
+}
+
+.polaroid:hover {
+  transform: scale(1.05) rotate(0deg);
+  z-index: 10;
 }
 
 .polaroid img {
