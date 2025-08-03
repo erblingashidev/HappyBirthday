@@ -33,6 +33,7 @@ body::before {
   height: 100vh;
   overflow-x: hidden;
   position: relative;
+  perspective: 1500px; /* Add perspective to give the 3D effect */
 }
 
 .page {
@@ -51,27 +52,28 @@ body::before {
   box-shadow: inset 0 0 30px rgba(255, 200, 230, 0.3);
   opacity: 0;
   transform: translateX(100%);
-  transition: transform 1s ease, opacity 1s ease;
+  z-index: -1; /* Ensure the page starts behind others */
 }
 
 .page.active {
   left: 0;
   opacity: 1;
   transform: translateX(0);
-  z-index: 1;
-  animation: flipIn 1s ease forwards;
+  z-index: 1; /* Bring it to the front */
 }
+
 
 @keyframes flipIn {
   from {
-    transform: rotateY(90deg);
+    transform: rotate3d(1, 0, 0, 90deg); /* Start with a 90-degree rotation */
     opacity: 0;
   }
   to {
-    transform: rotateY(0);
+    transform: rotate3d(1, 0, 0, 0deg); /* End with a flat view */
     opacity: 1;
   }
 }
+
 
 .page h1, .page h2, .page p, blockquote {
   text-align: center;
