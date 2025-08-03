@@ -5,48 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Story of Us</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#a83263">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Love Story">
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-container" id="progress">
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+
+    <!-- Share Button -->
+    <button class="share-btn" id="shareBtn" title="Share this story">
+      <i class="fas fa-share-alt"></i>
+    </button>
+
     <div class="book">
         <section class="page active">
             <h1>To the One Who Owns My Heart</h1>
-            <p>This isn’t just a gift—it’s a reflection of every heartbeat we’ve shared. Let’s turn these pages together.</p>
-          </section>
-          <section class="page">
+            <p>This isn't just a gift—it's a reflection of every heartbeat we've shared. Let's turn these pages together.</p>
+        </section>
+        <section class="page">
             <blockquote>"In you, I've found the home I never knew I was searching for."</blockquote>
-          </section>
-          <section class="page">
+        </section>
+        <section class="page">
             <p>Through chaos and calm, laughter and silence—you've remained the most beautiful constant in my life.</p>
-          </section>
-          <section class="page">
-            <img src="photo1.jpg" alt="Memory 1" />
-            <p>Do you remember this day? We didn’t need much. Just each other.</p>
-          </section>
-          <section class="page">
-            <blockquote>"Love isn’t about perfection. It’s about choosing each other—every single day."</blockquote>
-            <img src="photo2.jpg" alt="Memory 2" />
-          </section>
-          <section class="page">
+        </section>
+        <section class="page">
+            <img src="https://picsum.photos/400/300?random=1" alt="Memory 1" class="clickable-image" />
+            <p>Do you remember this day? We didn't need much. Just each other.</p>
+        </section>
+        <section class="page">
+            <blockquote>"Love isn't about perfection. It's about choosing each other—every single day."</blockquote>
+            <img src="https://picsum.photos/400/300?random=2" alt="Memory 2" class="clickable-image" />
+        </section>
+        <section class="page">
             <div class="polaroid-grid">
               <div class="polaroid">
-                <img src="photo3.jpg" alt="Memory 3" />
+                <img src="https://picsum.photos/200/200?random=3" alt="Memory 3" class="clickable-image" />
                 <p>Stars and stolen glances ✨</p>
               </div>
               <div class="polaroid">
-                <img src="photo4.jpg" alt="Memory 4" />
+                <img src="https://picsum.photos/200/200?random=4" alt="Memory 4" class="clickable-image" />
                 <p>First adventure together ✈️</p>
               </div>
               <div class="polaroid">
-                <img src="photo5.jpg" alt="Memory 5" />
+                <img src="https://picsum.photos/200/200?random=5" alt="Memory 5" class="clickable-image" />
                 <p>The kiss that paused the world 💋</p>
               </div>
             </div>
-          </section>
-          <section class="page">
+        </section>
+        <section class="page">
             <h2>And so, the story continues...</h2>
-            <p>Happy Birthday, my love. This isn’t the end—just the beginning of forever. 💞</p>
-          </section>
-      </div>
+            <p>Happy Birthday, my love. This isn't the end—just the beginning of forever. 💞</p>
+        </section>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+      <button class="nav-btn" id="prevBtn" title="Previous page">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="page-counter" id="pageCounter">1 / 7</div>
+      <button class="nav-btn" id="nextBtn" title="Next page">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Fullscreen Modal -->
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <img id="modalImage" src="" alt="Fullscreen image" />
+    </div>
+
   <script src="script.js"></script>
 </body>
 </html>
