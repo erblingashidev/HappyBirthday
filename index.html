@@ -3,246 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Love Story - Interactive Photo Book</title>
+    <title>Happy Birthday, My Love ❤️</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Welcome Screen -->
-    <div id="welcome-screen" class="welcome-screen">
-        <div class="welcome-content">
-            <h1 class="main-title">Our Love Story</h1>
-            <p class="subtitle">A journey through our memories</p>
-            <div class="hearts-container">
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
-                <div class="heart"></div>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-hearts">
+                <span>💕</span><span>💖</span><span>💝</span><span>💕</span>
             </div>
-            <button id="open-book" class="enter-btn">Open Our Book</button>
+            <h2>Loading Your Special Day...</h2>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Photo Book Container -->
-    <div id="book-container" class="book-container hidden">
-        <!-- Book Navigation -->
-        <div class="book-nav">
-            <button id="prev-page" class="nav-btn">←</button>
-            <span id="page-indicator" class="page-indicator">Page 1 of 8</span>
-            <button id="next-page" class="nav-btn">→</button>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="welcome-screen hidden">
+        <div class="welcome-content">
+            <div class="floating-hearts">
+                <div class="heart"></div>
+                <div class="heart"></div>
+                <div class="heart"></div>
+                <div class="heart"></div>
+                <div class="heart"></div>
+            </div>
+            <h1 class="main-title">Happy Birthday</h1>
+            <p class="subtitle">My Beautiful Love</p>
+            <div class="birthday-cake">
+                <div class="cake-layer"></div>
+                <div class="cake-layer"></div>
+                <div class="cake-layer"></div>
+                <div class="candle"></div>
+                <div class="flame"></div>
+            </div>
+            <button id="start-journey" class="start-btn">Start Our Journey</button>
         </div>
+    </div>
 
-        <!-- Book Pages Container -->
-        <div id="book-pages" class="book-pages">
-            <!-- Mobile Swipe Indicator -->
-            <div id="swipe-indicator" class="swipe-indicator">
-                <div class="swipe-arrow left">←</div>
-                <span>Swipe to turn pages</span>
-                <div class="swipe-arrow right">→</div>
-            </div>
-            
-            <!-- Page 1: Cover -->
-            <div class="book-page active" data-page="1">
-                <div class="page-content cover-page">
-                    <div class="cover-title">
-                        <h1>Our Love Story</h1>
-                        <p class="subtitle">A journey through our memories</p>
-                    </div>
-                    <div class="cover-hearts">
-                        <span>💕</span><span>💖</span><span>💝</span><span>💕</span>
-                    </div>
-                    <div class="cover-instruction">
-                        <p>Swipe or use arrows to turn pages</p>
-                    </div>
-                </div>
-            </div>
+    <!-- Main Experience -->
+    <div id="main-experience" class="main-experience hidden">
+        <!-- Navigation -->
+        <nav class="experience-nav">
+            <button id="prev-chapter" class="nav-btn">←</button>
+            <span id="chapter-indicator" class="chapter-indicator">Chapter 1 of 6</span>
+            <button id="next-chapter" class="nav-btn">→</button>
+        </nav>
 
-            <!-- Page 2: First Meeting -->
-            <div class="book-page" data-page="2">
-                <div class="page-content memory-page">
-                    <div class="page-header">
-                        <h2>Our First Meeting</h2>
-                        <p class="date">January 15, 2024</p>
+        <!-- Chapters Container -->
+        <div id="chapters-container" class="chapters-container">
+            <!-- Chapter 1: The Beginning -->
+            <div class="chapter active" data-chapter="1">
+                <div class="chapter-content">
+                    <div class="chapter-header">
+                        <h2>Chapter 1: The Beginning</h2>
+                        <p class="date">When Our Story Began</p>
                     </div>
-                    <div class="memory-content">
-                        <div class="memory-image">
-                            <span class="photo-emoji">💕</span>
-                        </div>
-                        <div class="memory-text">
-                            <p>The day our eyes first met and our hearts connected forever. That magical moment when time stood still and everything changed...</p>
-                            <p>Remember how nervous we both were? But the moment we started talking, it felt like we had known each other forever.</p>
-                        </div>
-                        <div class="memory-hearts">
-                            <span>❤️</span><span>💖</span><span>💝</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page 3: Valentine's Day -->
-            <div class="book-page" data-page="3">
-                <div class="page-content memory-page">
-                    <div class="page-header">
-                        <h2>Valentine's Day</h2>
-                        <p class="date">February 14, 2024</p>
-                    </div>
-                    <div class="memory-content">
-                        <div class="memory-image">
-                            <span class="photo-emoji">🌹</span>
-                        </div>
-                        <div class="memory-text">
-                            <p>Roses, chocolates, and endless love. Our first Valentine's Day together was absolutely perfect.</p>
-                            <p>The way you smiled when you saw the roses, the candlelit dinner, and the way we danced under the stars...</p>
-                        </div>
-                        <div class="memory-hearts">
-                            <span>💕</span><span>💗</span><span>💓</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page 4: Travel Adventures -->
-            <div class="book-page" data-page="4">
-                <div class="page-content memory-page">
-                    <div class="page-header">
-                        <h2>Our Adventures</h2>
-                        <p class="date">March 2024</p>
-                    </div>
-                    <div class="memory-content">
-                        <div class="memory-image">
-                            <span class="photo-emoji">✈️</span>
-                        </div>
-                        <div class="memory-text">
-                            <p>Exploring new places, creating unforgettable memories together. Every trip with you is an adventure I'll never forget.</p>
-                            <p>From beach vacations to mountain hikes, every moment with you is pure magic.</p>
-                        </div>
-                        <div class="memory-hearts">
-                            <span>🌅</span><span>🏖️</span><span>💕</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page 5: Quotes -->
-            <div class="book-page" data-page="5">
-                <div class="page-content quotes-page">
-                    <div class="page-header">
-                        <h2>Words That Define Us</h2>
-                    </div>
-                    <div class="quotes-content">
-                        <div class="quote-item">
-                            <blockquote>"In all the world, there is no heart for me like yours."</blockquote>
-                            <cite>- Maya Angelou</cite>
-                        </div>
-                        <div class="quote-item">
-                            <blockquote>"I have loved you for a thousand years, and I'll love you for a thousand more."</blockquote>
-                            <cite>- Christina Perri</cite>
-                        </div>
-                        <div class="quote-item">
-                            <blockquote>"You are my today and all of my tomorrows."</blockquote>
-                            <cite>- Leo Christopher</cite>
-                        </div>
-                        <div class="quote-item">
-                            <blockquote>"Every love story is beautiful, but ours is my favorite."</blockquote>
-                            <cite>- Unknown</cite>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page 6: Photo Gallery -->
-            <div class="book-page" data-page="6">
-                <div class="page-content gallery-page">
-                    <div class="page-header">
-                        <h2>Our Photo Gallery</h2>
-                    </div>
-                    <div class="gallery-grid">
-                        <div class="gallery-item">
-                            <div class="photo-placeholder">
-                                <span>📸</span>
+                    <div class="story-content">
+                        <div class="story-image">
+                            <div class="image-placeholder">
+                                <span class="emoji">💕</span>
                                 <p>Our First Photo</p>
                             </div>
                         </div>
-                        <div class="gallery-item">
-                            <div class="photo-placeholder">
-                                <span>🌅</span>
-                                <p>Sunset Walks</p>
+                        <div class="story-text">
+                            <p>Every love story has a beginning, and ours started with a simple hello that changed everything...</p>
+                            <p>I remember the first time I saw your smile, the way your eyes lit up when you laughed, and how my heart skipped a beat.</p>
+                            <p>That moment marked the beginning of the most beautiful journey of my life.</p>
+                        </div>
+                        <div class="interactive-element">
+                            <button class="memory-btn" data-memory="first-meeting">💕 Click to Remember</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter 2: Growing Together -->
+            <div class="chapter" data-chapter="2">
+                <div class="chapter-content">
+                    <div class="chapter-header">
+                        <h2>Chapter 2: Growing Together</h2>
+                        <p class="date">Every Day, Every Moment</p>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-image">
+                            <div class="image-placeholder">
+                                <span class="emoji">🌱</span>
+                                <p>Our Growth</p>
                             </div>
                         </div>
-                        <div class="gallery-item">
-                            <div class="photo-placeholder">
-                                <span>🎭</span>
-                                <p>Fun Times</p>
-                            </div>
+                        <div class="story-text">
+                            <p>Like a beautiful garden, our love has grown stronger with each passing day...</p>
+                            <p>We've shared countless moments, from quiet mornings to exciting adventures, each one making our bond deeper.</p>
+                            <p>Every challenge we've faced together has only made us stronger.</p>
                         </div>
-                        <div class="gallery-item">
-                            <div class="photo-placeholder">
-                                <span>💕</span>
-                                <p>Special Moments</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="photo-placeholder">
-                                <span>🌟</span>
-                                <p>Adventures</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="photo-placeholder">
-                                <span>🎉</span>
-                                <p>Celebrations</p>
+                        <div class="interactive-element">
+                            <div class="love-meter">
+                                <div class="meter-label">Our Love Level</div>
+                                <div class="meter-bar">
+                                    <div class="meter-fill" data-level="100"></div>
+                                </div>
+                                <button class="boost-btn">💖 Boost Our Love</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Page 7: Apology -->
-            <div class="book-page" data-page="7">
-                <div class="page-content apology-page">
-                    <div class="page-header">
-                        <h2>I'm Sorry</h2>
+            <!-- Chapter 3: Adventures -->
+            <div class="chapter" data-chapter="3">
+                <div class="chapter-content">
+                    <div class="chapter-header">
+                        <h2>Chapter 3: Our Adventures</h2>
+                        <p class="date">Exploring Life Together</p>
                     </div>
-                    <div class="apology-content">
-                        <div class="apology-image">
-                            <span class="photo-emoji">💝</span>
+                    <div class="story-content">
+                        <div class="story-image">
+                            <div class="image-placeholder">
+                                <span class="emoji">✈️</span>
+                                <p>Our Travels</p>
+                            </div>
                         </div>
-                        <div class="apology-text">
-                            <p>I know I've made mistakes, and I want you to know how truly sorry I am.</p>
-                            <p>You deserve the world, and I promise to be better for you.</p>
-                            <p>Your happiness means everything to me.</p>
-                            <p>I love you more than words can express.</p>
+                        <div class="story-text">
+                            <p>From quiet coffee dates to exciting travels, every adventure with you has been magical...</p>
+                            <p>We've created memories in so many places, each location holding a special piece of our story.</p>
+                            <p>Every journey with you feels like a new chapter in our love story.</p>
                         </div>
-                        <div class="apology-hearts">
-                            <span>❤️</span><span>💖</span><span>💝</span><span>💕</span><span>💗</span>
+                        <div class="interactive-element">
+                            <div class="adventure-map">
+                                <div class="map-point" data-location="Coffee Shop">☕</div>
+                                <div class="map-point" data-location="Beach">🏖️</div>
+                                <div class="map-point" data-location="Mountain">🏔️</div>
+                                <div class="map-point" data-location="City">🌆</div>
+                                <div class="map-point" data-location="Home">🏠</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Page 8: Birthday -->
-            <div class="book-page" data-page="8">
-                <div class="page-content birthday-page">
-                    <div class="page-header">
-                        <h2>Happy Birthday!</h2>
-                        <p class="date">My Beautiful Love</p>
+            <!-- Chapter 4: Special Moments -->
+            <div class="chapter" data-chapter="4">
+                <div class="chapter-content">
+                    <div class="chapter-header">
+                        <h2>Chapter 4: Special Moments</h2>
+                        <p class="date">Memories That Last Forever</p>
                     </div>
-                    <div class="birthday-content">
-                        <div class="birthday-cake">
-                            <div class="cake-layer"></div>
-                            <div class="cake-layer"></div>
-                            <div class="cake-layer"></div>
-                            <div class="candle"></div>
-                            <div class="flame"></div>
+                    <div class="story-content">
+                        <div class="story-image">
+                            <div class="image-placeholder">
+                                <span class="emoji">⭐</span>
+                                <p>Special Times</p>
+                            </div>
                         </div>
-                        <div class="birthday-message">
+                        <div class="story-text">
+                            <p>Some moments are so special they become part of who we are...</p>
+                            <p>From our first kiss to quiet evenings watching movies, every moment with you is precious.</p>
+                            <p>These memories are the treasures of my heart.</p>
+                        </div>
+                        <div class="interactive-element">
+                            <div class="memory-gallery">
+                                <div class="memory-card" data-memory="first-kiss">
+                                    <span>💋</span>
+                                    <p>First Kiss</p>
+                                </div>
+                                <div class="memory-card" data-memory="movie-night">
+                                    <span>🎬</span>
+                                    <p>Movie Nights</p>
+                                </div>
+                                <div class="memory-card" data-memory="dinner">
+                                    <span>🍽️</span>
+                                    <p>Dinner Dates</p>
+                                </div>
+                                <div class="memory-card" data-memory="dance">
+                                    <span>💃</span>
+                                    <p>Dancing</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter 5: Apology & Growth -->
+            <div class="chapter" data-chapter="5">
+                <div class="chapter-content">
+                    <div class="chapter-header">
+                        <h2>Chapter 5: Growing Stronger</h2>
+                        <p class="date">Through Thick and Thin</p>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-image">
+                            <div class="image-placeholder">
+                                <span class="emoji">💝</span>
+                                <p>Our Strength</p>
+                            </div>
+                        </div>
+                        <div class="story-text">
+                            <p>Every relationship faces challenges, and ours has made us stronger...</p>
+                            <p>I want you to know how much I appreciate your patience, understanding, and love.</p>
+                            <p>You deserve the world, and I promise to be better for you every day.</p>
+                        </div>
+                        <div class="interactive-element">
+                            <div class="apology-hearts">
+                                <button class="heart-btn" data-message="I'm sorry">❤️</button>
+                                <button class="heart-btn" data-message="I love you">💖</button>
+                                <button class="heart-btn" data-message="Thank you">💝</button>
+                                <button class="heart-btn" data-message="You're perfect">💕</button>
+                                <button class="heart-btn" data-message="I promise">💗</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter 6: Birthday Celebration -->
+            <div class="chapter" data-chapter="6">
+                <div class="chapter-content">
+                    <div class="chapter-header">
+                        <h2>Chapter 6: Happy Birthday!</h2>
+                        <p class="date">Today and Always</p>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-image">
+                            <div class="birthday-cake-large">
+                                <div class="cake-layer"></div>
+                                <div class="cake-layer"></div>
+                                <div class="cake-layer"></div>
+                                <div class="candle"></div>
+                                <div class="flame"></div>
+                            </div>
+                        </div>
+                        <div class="story-text">
+                            <p>Today is your special day, and I want to make it as magical as you are...</p>
                             <p>May this year bring you all the joy, love, and happiness you deserve.</p>
-                            <p>You make every day feel like a celebration.</p>
-                            <p>Happy Birthday, Beautiful! 🎉</p>
+                            <p>You make every day feel like a celebration just by being you.</p>
                         </div>
-                        <div class="birthday-hearts">
-                            <span>🎉</span><span>🎁</span><span>🎊</span><span>💕</span><span>💖</span>
+                        <div class="interactive-element">
+                            <button id="birthday-celebration" class="celebration-btn">🎉 Start Celebration</button>
                         </div>
                     </div>
                 </div>
@@ -251,6 +252,19 @@
 
         <!-- Confetti Container -->
         <div class="confetti-container"></div>
+    </div>
+
+    <!-- Memory Modal -->
+    <div id="memory-modal" class="memory-modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Memory</h3>
+                <button class="close-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-content"></div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

@@ -1,148 +1,165 @@
-// Our Love Story - Interactive Photo Book JavaScript
+// Romantic Birthday Experience JavaScript
 
-class InteractivePhotoBook {
+class RomanticBirthdayExperience {
     constructor() {
-        this.currentPage = 1;
-        this.totalPages = 8;
+        this.currentChapter = 1;
+        this.totalChapters = 6;
         this.isTransitioning = false;
         this.confettiParticles = [];
+        this.memories = {
+            'first-meeting': {
+                title: 'Our First Meeting',
+                content: 'I remember the exact moment when our eyes first met. The way you smiled, the way your voice sounded, everything about that moment is etched in my heart forever. That simple hello changed my entire world.',
+                emoji: '💕'
+            },
+            'first-kiss': {
+                title: 'Our First Kiss',
+                content: 'That magical moment when our lips touched for the first time. Time seemed to stand still, and I knew in that instant that you were the one I wanted to spend my life with.',
+                emoji: '💋'
+            },
+            'movie-night': {
+                title: 'Movie Nights Together',
+                content: 'Cuddling on the couch, watching our favorite movies, sharing popcorn and laughter. These quiet moments with you are some of my most treasured memories.',
+                emoji: '🎬'
+            },
+            'dinner': {
+                title: 'Romantic Dinners',
+                content: 'Every candlelit dinner, every fancy restaurant, every home-cooked meal we\'ve shared. The way you light up when you talk about your day makes every meal special.',
+                emoji: '🍽️'
+            },
+            'dance': {
+                title: 'Dancing Together',
+                content: 'Whether it\'s slow dancing in the living room or dancing like crazy at parties, every moment moving with you feels like pure magic.',
+                emoji: '💃'
+            }
+        };
         this.init();
     }
 
     init() {
         this.setupEventListeners();
         this.createConfetti();
-        this.setupPageAnimations();
+        this.setupChapterAnimations();
         this.setupSwipeGestures();
-        this.setupMobileExperience();
+        this.startLoading();
     }
 
-    setupMobileExperience() {
-        // Check if device is mobile
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                        (window.innerWidth <= 768);
-        
-        if (isMobile) {
-            // Show swipe indicator after a delay
+    startLoading() {
+        // Simulate loading progress
+        setTimeout(() => {
+            this.hideLoading();
+            this.showWelcome();
+        }, 3000);
+    }
+
+    hideLoading() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.opacity = '0';
             setTimeout(() => {
-                this.showSwipeIndicator();
-            }, 2000);
-            
-            // Add mobile-specific optimizations
-            this.addMobileOptimizations();
+                loadingScreen.style.display = 'none';
+            }, 1000);
         }
     }
 
-    showSwipeIndicator() {
-        const swipeIndicator = document.getElementById('swipe-indicator');
-        if (swipeIndicator) {
-            swipeIndicator.classList.add('show');
-            
-            // Hide after 3 seconds
-            setTimeout(() => {
-                swipeIndicator.classList.remove('show');
-            }, 3000);
+    showWelcome() {
+        const welcomeScreen = document.getElementById('welcome-screen');
+        if (welcomeScreen) {
+            welcomeScreen.classList.remove('hidden');
+            welcomeScreen.style.opacity = '1';
         }
-    }
-
-    addMobileOptimizations() {
-        // Prevent zoom on double tap
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-        
-        // Prevent pull-to-refresh and handle horizontal scrolling
-        document.addEventListener('touchmove', (e) => {
-            // Only prevent default for horizontal swipes
-            if (e.touches.length === 1) {
-                const touch = e.touches[0];
-                const startX = this.lastTouchX || touch.clientX;
-                const startY = this.lastTouchY || touch.clientY;
-                
-                const diffX = Math.abs(touch.clientX - startX);
-                const diffY = Math.abs(touch.clientY - startY);
-                
-                // If horizontal movement is greater than vertical, prevent default
-                if (diffX > diffY && diffX > 10) {
-                    e.preventDefault();
-                }
-                
-                this.lastTouchX = touch.clientX;
-                this.lastTouchY = touch.clientY;
-            }
-        }, { passive: false });
-        
-        // Reset touch coordinates
-        document.addEventListener('touchend', () => {
-            this.lastTouchX = null;
-            this.lastTouchY = null;
-        });
-        
-        // Add haptic feedback for page changes
-        if ('vibrate' in navigator) {
-            this.addHapticFeedback = true;
-        }
-        
-        // Prevent horizontal scrolling on the body
-        document.body.style.overflowX = 'hidden';
-        document.body.style.touchAction = 'pan-y';
     }
 
     setupEventListeners() {
-        // Open book button
-        const openBookBtn = document.getElementById('open-book');
-        if (openBookBtn) {
-            openBookBtn.addEventListener('click', () => this.openBook());
+        // Start journey button
+        const startBtn = document.getElementById('start-journey');
+        if (startBtn) {
+            startBtn.addEventListener('click', () => this.startJourney());
         }
 
         // Navigation buttons
-        const prevBtn = document.getElementById('prev-page');
-        const nextBtn = document.getElementById('next-page');
-        
-        console.log('Navigation buttons found:', { prevBtn, nextBtn });
+        const prevBtn = document.getElementById('prev-chapter');
+        const nextBtn = document.getElementById('next-chapter');
         
         if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                console.log('Prev button clicked');
-                this.prevPage();
-            });
+            prevBtn.addEventListener('click', () => this.prevChapter());
         }
         
         if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                console.log('Next button clicked');
-                this.nextPage();
+            nextBtn.addEventListener('click', () => this.nextChapter());
+        }
+
+        // Memory buttons
+        const memoryBtns = document.querySelectorAll('.memory-btn');
+        memoryBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const memory = e.target.dataset.memory;
+                this.showMemory(memory);
             });
+        });
+
+        // Love meter boost
+        const boostBtn = document.querySelector('.boost-btn');
+        if (boostBtn) {
+            boostBtn.addEventListener('click', () => this.boostLove());
+        }
+
+        // Adventure map points
+        const mapPoints = document.querySelectorAll('.map-point');
+        mapPoints.forEach(point => {
+            point.addEventListener('click', (e) => {
+                const location = e.target.dataset.location;
+                this.showLocation(location);
+            });
+        });
+
+        // Memory cards
+        const memoryCards = document.querySelectorAll('.memory-card');
+        memoryCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                const memory = e.target.closest('.memory-card').dataset.memory;
+                this.showMemory(memory);
+            });
+        });
+
+        // Heart buttons
+        const heartBtns = document.querySelectorAll('.heart-btn');
+        heartBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const message = e.target.dataset.message;
+                this.showHeartMessage(message);
+            });
+        });
+
+        // Birthday celebration
+        const celebrationBtn = document.getElementById('birthday-celebration');
+        if (celebrationBtn) {
+            celebrationBtn.addEventListener('click', () => this.startCelebration());
+        }
+
+        // Modal close
+        const closeModal = document.querySelector('.close-modal');
+        if (closeModal) {
+            closeModal.addEventListener('click', () => this.closeModal());
         }
 
         // Add touch feedback for mobile
-        [prevBtn, nextBtn].forEach(btn => {
-            if (btn) {
-                btn.addEventListener('touchstart', (e) => {
-                    this.addTouchFeedback(e.target);
-                });
+        this.addTouchFeedback();
+    }
 
-                btn.addEventListener('touchend', (e) => {
-                    this.removeTouchFeedback(e.target);
-                });
-            }
-        });
-
-        // Gallery items for modal
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        galleryItems.forEach(item => {
-            item.addEventListener('click', () => this.showGalleryModal(item));
-            item.addEventListener('mouseenter', () => this.addGalleryHoverEffect(item));
-            item.addEventListener('mouseleave', () => this.removeGalleryHoverEffect(item));
+    addTouchFeedback() {
+        const buttons = document.querySelectorAll('button, .memory-card, .map-point, .heart-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('touchstart', (e) => {
+                btn.style.transform = 'scale(0.95)';
+            });
             
-            // Add touch interactions for mobile
-            item.addEventListener('touchstart', () => this.addGalleryTouchEffect(item));
+            btn.addEventListener('touchend', (e) => {
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 150);
+            });
         });
-
-        // Special effects for birthday page
-        this.setupBirthdayEffects();
     }
 
     setupSwipeGestures() {
@@ -189,239 +206,94 @@ class InteractivePhotoBook {
             const diffY = startY - endY;
             const duration = Date.now() - startTime;
 
-            // Horizontal swipe detection with minimum distance and speed
+            // Horizontal swipe detection
             if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && duration < 500) {
                 e.preventDefault();
                 e.stopPropagation();
                 if (diffX > 0) {
-                    console.log('Swipe right - next page');
-                    this.nextPage();
+                    this.nextChapter();
                 } else {
-                    console.log('Swipe left - prev page');
-                    this.prevPage();
+                    this.prevChapter();
                 }
             }
         }, { passive: false });
-
-        // Mouse events for desktop
-        let mouseStartX = 0;
-        let mouseStartY = 0;
-        let mouseStartTime = 0;
-        let isMouseSwiping = false;
-
-        document.addEventListener('mousedown', (e) => {
-            mouseStartX = e.clientX;
-            mouseStartY = e.clientY;
-            mouseStartTime = Date.now();
-            isMouseSwiping = false;
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isMouseSwiping) {
-                const diffX = Math.abs(e.clientX - mouseStartX);
-                const diffY = Math.abs(e.clientY - mouseStartY);
-                
-                if (diffX > 10 || diffY > 10) {
-                    isMouseSwiping = true;
-                }
-            }
-        });
-
-        document.addEventListener('mouseup', (e) => {
-            if (!isMouseSwiping) return;
-            
-            const diffX = mouseStartX - e.clientX;
-            const diffY = mouseStartY - e.clientY;
-            const duration = Date.now() - mouseStartTime;
-
-            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && duration < 500) {
-                if (diffX > 0) {
-                    console.log('Mouse swipe right - next page');
-                    this.nextPage();
-                } else {
-                    console.log('Mouse swipe left - prev page');
-                    this.prevPage();
-                }
-            }
-        });
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
                 e.preventDefault();
-                this.prevPage();
+                this.prevChapter();
             } else if (e.key === 'ArrowRight') {
                 e.preventDefault();
-                this.nextPage();
+                this.nextChapter();
             }
         });
     }
 
-    openBook() {
+    startJourney() {
         const welcomeScreen = document.getElementById('welcome-screen');
-        const bookContainer = document.getElementById('book-container');
+        const mainExperience = document.getElementById('main-experience');
         
-        // Enhanced entrance animation
         welcomeScreen.style.opacity = '0';
         welcomeScreen.style.transform = 'scale(0.9)';
         
         setTimeout(() => {
             welcomeScreen.style.display = 'none';
-            bookContainer.classList.remove('hidden');
-            bookContainer.style.opacity = '1';
-            bookContainer.style.transform = 'scale(1)';
+            mainExperience.classList.remove('hidden');
+            mainExperience.style.opacity = '1';
+            this.showChapter(1);
         }, 1000);
-
-        // Add enhanced entrance effects
-        this.animateBookEntrance();
     }
 
-    animateBookEntrance() {
-        // Add entrance sparkle effect
-        this.createEnhancedSparkles();
-        
-        // Add floating particles
-        this.createFloatingParticles();
-        
-        // Show first page
-        this.showPage(1);
-    }
-
-    createEnhancedSparkles() {
-        const sparkleContainer = document.createElement('div');
-        sparkleContainer.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 100;
-        `;
-        
-        for (let i = 0; i < 30; i++) {
-            setTimeout(() => {
-                this.createSparkle(sparkleContainer, true);
-            }, i * 80);
-        }
-        
-        document.body.appendChild(sparkleContainer);
-        
-        setTimeout(() => {
-            sparkleContainer.remove();
-        }, 4000);
-    }
-
-    createFloatingParticles() {
-        const particleContainer = document.createElement('div');
-        particleContainer.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-        `;
-        
-        for (let i = 0; i < 15; i++) {
-            setTimeout(() => {
-                this.createFloatingParticle(particleContainer);
-            }, i * 200);
-        }
-        
-        document.body.appendChild(particleContainer);
-        
-        setTimeout(() => {
-            particleContainer.remove();
-        }, 6000);
-    }
-
-    createFloatingParticle(container) {
-        const particle = document.createElement('div');
-        const colors = ['#ff6b6b', '#ffd93d', '#a8e6cf', '#ffb347'];
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        
-        particle.style.cssText = `
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: ${color};
-            border-radius: 50%;
-            left: ${Math.random() * 100}%;
-            top: 100%;
-            animation: floatingParticle 4s ease-out forwards;
-        `;
-        
-        container.appendChild(particle);
-        
-        setTimeout(() => {
-            if (particle.parentNode) {
-                particle.remove();
-            }
-        }, 4000);
-    }
-
-    prevPage() {
+    prevChapter() {
         if (this.isTransitioning) return;
         
-        if (this.currentPage > 1) {
-            this.showPage(this.currentPage - 1);
+        if (this.currentChapter > 1) {
+            this.showChapter(this.currentChapter - 1);
         }
     }
 
-    nextPage() {
+    nextChapter() {
         if (this.isTransitioning) return;
         
-        if (this.currentPage < this.totalPages) {
-            this.showPage(this.currentPage + 1);
+        if (this.currentChapter < this.totalChapters) {
+            this.showChapter(this.currentChapter + 1);
         }
     }
 
-    showPage(pageNumber) {
+    showChapter(chapterNumber) {
         if (this.isTransitioning) return;
         
         this.isTransitioning = true;
         
-        // Add haptic feedback for mobile
-        if (this.addHapticFeedback && 'vibrate' in navigator) {
-            navigator.vibrate(50);
-        }
-        
-        // Hide all pages first
-        const allPages = document.querySelectorAll('.book-page');
-        allPages.forEach(page => {
-            page.classList.remove('active', 'prev');
-            page.style.opacity = '0';
-            page.style.transform = 'translateX(100%)';
+        // Hide all chapters first
+        const allChapters = document.querySelectorAll('.chapter');
+        allChapters.forEach(chapter => {
+            chapter.classList.remove('active', 'prev');
+            chapter.style.opacity = '0';
+            chapter.style.transform = 'translateX(100%)';
         });
         
-        // Show the new page
-        const newPage = document.querySelector(`.book-page[data-page="${pageNumber}"]`);
-        if (newPage) {
-            newPage.classList.add('active');
-            newPage.style.opacity = '1';
-            newPage.style.transform = 'translateX(0)';
+        // Show the new chapter
+        const newChapter = document.querySelector(`.chapter[data-chapter="${chapterNumber}"]`);
+        if (newChapter) {
+            newChapter.classList.add('active');
+            newChapter.style.opacity = '1';
+            newChapter.style.transform = 'translateX(0)';
         }
         
-        // Update current page
-        this.currentPage = pageNumber;
+        // Update current chapter
+        this.currentChapter = chapterNumber;
         
         // Update navigation
         this.updateNavigation();
         
-        // Add page transition effects
-        this.addPageTransitionEffects();
+        // Add chapter transition effects
+        this.addChapterTransitionEffects();
         
-        // Special effects for specific pages
-        if (pageNumber === 8) { // Birthday page
-            this.activateBirthdayPage();
-        }
-        
-        // Hide swipe indicator after first page change
-        const swipeIndicator = document.getElementById('swipe-indicator');
-        if (swipeIndicator && swipeIndicator.classList.contains('show')) {
-            swipeIndicator.classList.remove('show');
+        // Special effects for specific chapters
+        if (chapterNumber === 6) { // Birthday chapter
+            this.activateBirthdayChapter();
         }
         
         setTimeout(() => {
@@ -430,32 +302,34 @@ class InteractivePhotoBook {
     }
 
     updateNavigation() {
-        const prevBtn = document.getElementById('prev-page');
-        const nextBtn = document.getElementById('next-page');
-        const pageIndicator = document.getElementById('page-indicator');
+        const prevBtn = document.getElementById('prev-chapter');
+        const nextBtn = document.getElementById('next-chapter');
+        const chapterIndicator = document.getElementById('chapter-indicator');
         
         if (prevBtn) {
-            prevBtn.disabled = this.currentPage === 1;
+            prevBtn.disabled = this.currentChapter === 1;
         }
         
         if (nextBtn) {
-            nextBtn.disabled = this.currentPage === this.totalPages;
+            nextBtn.disabled = this.currentChapter === this.totalChapters;
         }
         
-        if (pageIndicator) {
-            pageIndicator.textContent = `Page ${this.currentPage} of ${this.totalPages}`;
+        if (chapterIndicator) {
+            chapterIndicator.textContent = `Chapter ${this.currentChapter} of ${this.totalChapters}`;
         }
     }
 
-    addPageTransitionEffects() {
+    addChapterTransitionEffects() {
         // Add sparkle effect
-        this.createPageSparkles();
+        this.createSparkles();
         
-        // Add page turn sound effect (visual feedback)
-        this.addPageTurnEffect();
+        // Add haptic feedback for mobile
+        if ('vibrate' in navigator) {
+            navigator.vibrate(50);
+        }
     }
 
-    createPageSparkles() {
+    createSparkles() {
         const sparkleContainer = document.createElement('div');
         sparkleContainer.style.cssText = `
             position: fixed;
@@ -469,7 +343,7 @@ class InteractivePhotoBook {
         
         for (let i = 0; i < 15; i++) {
             setTimeout(() => {
-                this.createSparkle(sparkleContainer, false);
+                this.createSparkle(sparkleContainer);
             }, i * 100);
         }
         
@@ -480,119 +354,197 @@ class InteractivePhotoBook {
         }, 2000);
     }
 
-    addPageTurnEffect() {
-        const bookPages = document.getElementById('book-pages');
-        if (bookPages) {
-            bookPages.style.transform = 'perspective(1000px) rotateY(5deg)';
-            setTimeout(() => {
-                bookPages.style.transform = 'perspective(1000px) rotateY(0deg)';
-            }, 300);
+    createSparkle(container) {
+        const sparkle = document.createElement('div');
+        sparkle.innerHTML = '✨';
+        sparkle.style.cssText = `
+            position: absolute;
+            font-size: 1.5rem;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: sparkleFloat 2s ease-out forwards;
+        `;
+        
+        container.appendChild(sparkle);
+        
+        setTimeout(() => {
+            if (sparkle.parentNode) {
+                sparkle.remove();
+            }
+        }, 2000);
+    }
+
+    showMemory(memoryKey) {
+        const memory = this.memories[memoryKey];
+        if (!memory) return;
+        
+        const modal = document.getElementById('memory-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        
+        if (modal && modalTitle && modalContent) {
+            modalTitle.textContent = memory.title;
+            modalContent.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">${memory.emoji}</div>
+                    <p style="font-size: 1.1rem; line-height: 1.8;">${memory.content}</p>
+                </div>
+            `;
+            
+            modal.classList.add('show');
         }
     }
 
-    showGalleryModal(item) {
-        const placeholder = item.querySelector('.photo-placeholder');
-        const emoji = placeholder.querySelector('span').textContent;
-        const title = placeholder.querySelector('p').textContent;
+    showLocation(location) {
+        const modal = document.getElementById('memory-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
         
-        this.createGalleryModal(title, emoji);
+        if (modal && modalTitle && modalContent) {
+            modalTitle.textContent = location;
+            modalContent.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📍</div>
+                    <p style="font-size: 1.1rem; line-height: 1.8;">This is where we created beautiful memories together. Every place we've visited holds a special piece of our love story.</p>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+        }
     }
 
-    createGalleryModal(title, emoji) {
-        const modal = document.createElement('div');
-        modal.className = 'gallery-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-emoji">${emoji}</div>
-                <h3>${title}</h3>
-                <p class="modal-hint">💡 Tap to add your own photo here!</p>
-                <p class="modal-description">This is where your beautiful photo will be displayed. You can replace this placeholder with your actual photo by editing the HTML file.</p>
-                <button class="close-modal">Close</button>
-            </div>
+    showHeartMessage(message) {
+        // Create floating heart message
+        const heartMessage = document.createElement('div');
+        heartMessage.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 107, 107, 0.9);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            z-index: 1000;
+            animation: heartMessageFloat 3s ease-out forwards;
         `;
+        heartMessage.textContent = message;
         
-        modal.style.cssText = `
+        document.body.appendChild(heartMessage);
+        
+        setTimeout(() => {
+            heartMessage.remove();
+        }, 3000);
+    }
+
+    boostLove() {
+        const meterFill = document.querySelector('.meter-fill');
+        if (meterFill) {
+            meterFill.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                meterFill.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // Add love boost effect
+        this.createLoveHearts();
+    }
+
+    createLoveHearts() {
+        const heartContainer = document.createElement('div');
+        heartContainer.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease-out;
+            pointer-events: none;
+            z-index: 150;
         `;
         
-        const modalContent = modal.querySelector('.modal-content');
-        modalContent.style.cssText = `
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(20px);
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            max-width: 350px;
-            margin: 1rem;
-        `;
+        for (let i = 0; i < 10; i++) {
+            setTimeout(() => {
+                this.createFloatingHeart(heartContainer);
+            }, i * 200);
+        }
         
-        modalContent.querySelector('.modal-emoji').style.fontSize = '4rem';
-        modalContent.querySelector('h3').style.marginBottom = '1rem';
-        modalContent.querySelector('.modal-hint').style.marginBottom = '1rem';
-        modalContent.querySelector('.modal-hint').style.fontSize = '0.9rem';
-        modalContent.querySelector('.modal-hint').style.opacity = '0.8';
-        modalContent.querySelector('.modal-description').style.marginBottom = '2rem';
-        modalContent.querySelector('.modal-description').style.fontSize = '0.9rem';
-        modalContent.querySelector('.modal-description').style.lineHeight = '1.5';
+        document.body.appendChild(heartContainer);
         
-        const closeBtn = modalContent.querySelector('.close-modal');
-        closeBtn.style.cssText = `
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-        `;
-        
-        closeBtn.addEventListener('click', () => {
-            modal.style.animation = 'fadeOut 0.3s ease-out';
-            setTimeout(() => modal.remove(), 300);
-        });
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeBtn.click();
-            }
-        });
-        
-        document.body.appendChild(modal);
+        setTimeout(() => {
+            heartContainer.remove();
+        }, 5000);
     }
 
-    setupBirthdayEffects() {
-        // Add click listener to birthday page for special effects
-        const birthdayPage = document.querySelector('.book-page[data-page="8"]');
-        if (birthdayPage) {
-            birthdayPage.addEventListener('click', () => {
-                if (this.currentPage === 8) {
-                    this.activateBirthdayPage();
-                }
-            });
+    createFloatingHeart(container) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.style.cssText = `
+            position: absolute;
+            font-size: 1.5rem;
+            left: ${Math.random() * 100}%;
+            top: 100%;
+            animation: floatingHeart 4s ease-out forwards;
+        `;
+        
+        container.appendChild(heart);
+        
+        setTimeout(() => {
+            if (heart.parentNode) {
+                heart.remove();
+            }
+        }, 4000);
+    }
+
+    activateBirthdayChapter() {
+        // Add special birthday effects
+        this.createBirthdaySparkles();
+        
+        // Animate the cake
+        const cake = document.querySelector('.birthday-cake-large');
+        if (cake) {
+            cake.style.animation = 'bounce 0.8s ease-in-out';
+            setTimeout(() => {
+                cake.style.animation = '';
+            }, 800);
         }
     }
 
-    activateBirthdayPage() {
+    createBirthdaySparkles() {
+        const sparkleContainer = document.createElement('div');
+        sparkleContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        `;
+        
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                this.createSparkle(sparkleContainer);
+            }, i * 150);
+        }
+        
+        document.body.appendChild(sparkleContainer);
+        
+        setTimeout(() => {
+            sparkleContainer.remove();
+        }, 3000);
+    }
+
+    startCelebration() {
         // Start confetti
         this.startConfetti();
         
-        // Animate cake
-        this.animateCake();
+        // Add celebration effects
+        this.addCelebrationEffects();
         
-        // Add birthday effects
-        this.addBirthdayEffects();
+        // Show celebration message
+        this.showCelebrationMessage();
     }
 
     startConfetti() {
@@ -600,10 +552,10 @@ class InteractivePhotoBook {
         if (!confettiContainer) return;
         
         // Create more confetti particles
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 200; i++) {
             setTimeout(() => {
                 this.createConfettiParticle(confettiContainer);
-            }, i * 30);
+            }, i * 20);
         }
     }
 
@@ -641,118 +593,68 @@ class InteractivePhotoBook {
         }, 4000);
     }
 
-    animateCake() {
-        const cake = document.querySelector('.birthday-cake');
-        if (!cake) return;
-        
-        cake.style.animation = 'bounce 0.8s ease-in-out';
-        setTimeout(() => {
-            cake.style.animation = '';
-        }, 800);
-    }
-
-    addBirthdayEffects() {
-        // Add sparkle effect to birthday page
-        const birthdayPage = document.querySelector('.book-page[data-page="8"]');
-        if (birthdayPage) {
-            birthdayPage.style.animation = 'glow 2s ease-in-out infinite alternate';
+    addCelebrationEffects() {
+        // Add glow effect to celebration button
+        const celebrationBtn = document.getElementById('birthday-celebration');
+        if (celebrationBtn) {
+            celebrationBtn.style.animation = 'glow 1s ease-in-out infinite alternate';
             setTimeout(() => {
-                birthdayPage.style.animation = '';
-            }, 4000);
+                celebrationBtn.style.animation = '';
+            }, 5000);
         }
     }
 
-    addTouchFeedback(button) {
-        button.style.transform = 'scale(0.95)';
-        button.style.background = 'rgba(255, 255, 255, 0.3)';
-    }
-
-    removeTouchFeedback(button) {
-        setTimeout(() => {
-            button.style.transform = '';
-            button.style.background = '';
-        }, 150);
-    }
-
-    addGalleryHoverEffect(item) {
-        item.style.transform = 'scale(1.05)';
-        item.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
-    }
-
-    removeGalleryHoverEffect(item) {
-        item.style.transform = '';
-        item.style.boxShadow = '';
-    }
-
-    addGalleryTouchEffect(item) {
-        item.style.transform = 'scale(1.05)';
-        item.style.filter = 'brightness(1.1)';
+    showCelebrationMessage() {
+        const celebrationMessage = document.createElement('div');
+        celebrationMessage.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 217, 61, 0.9);
+            color: white;
+            padding: 2rem 3rem;
+            border-radius: 25px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            z-index: 1000;
+            text-align: center;
+            animation: celebrationMessageFloat 4s ease-out forwards;
+        `;
+        celebrationMessage.innerHTML = `
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+            <div>Happy Birthday, My Love!</div>
+            <div style="font-size: 1rem; margin-top: 1rem; opacity: 0.9;">May your day be as magical as you are</div>
+        `;
+        
+        document.body.appendChild(celebrationMessage);
         
         setTimeout(() => {
-            item.style.transform = '';
-            item.style.filter = '';
-        }, 300);
+            celebrationMessage.remove();
+        }, 4000);
     }
 
-    setupPageAnimations() {
-        // Add entrance animation to pages
-        const pages = document.querySelectorAll('.book-page');
-        pages.forEach((page, index) => {
-            page.style.opacity = '0';
-            page.style.transform = 'translateX(100%)';
-            page.classList.remove('active', 'prev');
+    closeModal() {
+        const modal = document.getElementById('memory-modal');
+        if (modal) {
+            modal.classList.remove('show');
+        }
+    }
+
+    setupChapterAnimations() {
+        // Add entrance animation to chapters
+        const chapters = document.querySelectorAll('.chapter');
+        chapters.forEach((chapter, index) => {
+            chapter.style.opacity = '0';
+            chapter.style.transform = 'translateX(100%)';
+            chapter.classList.remove('active', 'prev');
             
             if (index === 0) {
-                page.style.opacity = '1';
-                page.style.transform = 'translateX(0)';
-                page.classList.add('active');
+                chapter.style.opacity = '1';
+                chapter.style.transform = 'translateX(0)';
+                chapter.classList.add('active');
             }
         });
-    }
-
-    createSparkles() {
-        const sparkleContainer = document.createElement('div');
-        sparkleContainer.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 100;
-        `;
-        
-        for (let i = 0; i < 20; i++) {
-            setTimeout(() => {
-                this.createSparkle(sparkleContainer);
-            }, i * 100);
-        }
-        
-        document.body.appendChild(sparkleContainer);
-        
-        setTimeout(() => {
-            sparkleContainer.remove();
-        }, 3000);
-    }
-
-    createSparkle(container, enhanced = false) {
-        const sparkle = document.createElement('div');
-        sparkle.innerHTML = enhanced ? '✨' : '⭐';
-        sparkle.style.cssText = `
-            position: absolute;
-            font-size: ${enhanced ? '2rem' : '1.5rem'};
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation: sparkleFloat 2s ease-out forwards;
-        `;
-        
-        container.appendChild(sparkle);
-        
-        setTimeout(() => {
-            if (sparkle.parentNode) {
-                sparkle.remove();
-            }
-        }, 2000);
     }
 
     createConfetti() {
@@ -764,17 +666,6 @@ class InteractivePhotoBook {
 
 // Enhanced CSS animations
 const enhancedStyles = `
-    @keyframes confettiFall {
-        0% {
-            transform: translateY(-10px) rotate(0deg);
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(100vh) rotate(720deg);
-            opacity: 0;
-        }
-    }
-    
     @keyframes sparkleFloat {
         0% {
             transform: translateY(0) scale(0) rotate(0deg);
@@ -786,17 +677,6 @@ const enhancedStyles = `
         }
         100% {
             transform: translateY(-40px) scale(0) rotate(360deg);
-            opacity: 0;
-        }
-    }
-    
-    @keyframes floatingParticle {
-        0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-100vh) rotate(360deg);
             opacity: 0;
         }
     }
@@ -816,6 +696,55 @@ const enhancedStyles = `
         }
     }
     
+    @keyframes heartMessageFloat {
+        0% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+        20% {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 1;
+        }
+        80% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes celebrationMessageFloat {
+        0% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+        20% {
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 1;
+        }
+        80% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes confettiFall {
+        0% {
+            transform: translateY(-10px) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+    
     @keyframes bounce {
         0%, 20%, 50%, 80%, 100% {
             transform: translateY(0);
@@ -827,55 +756,6 @@ const enhancedStyles = `
             transform: translateY(-7px);
         }
     }
-    
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-            transform: scale(1);
-        }
-        to {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-    }
-    
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0) rotate(0deg);
-        }
-        25% {
-            transform: translateY(-8px) rotate(1deg);
-        }
-        50% {
-            transform: translateY(-4px) rotate(-1deg);
-        }
-        75% {
-            transform: translateY(-12px) rotate(0.5deg);
-        }
-    }
-    
-    @keyframes shake {
-        0%, 100% {
-            transform: translateX(0);
-        }
-        10%, 30%, 50%, 70%, 90% {
-            transform: translateX(-5px);
-        }
-        20%, 40%, 60%, 80% {
-            transform: translateX(5px);
-        }
-    }
 `;
 
 // Inject enhanced styles
@@ -883,52 +763,7 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = enhancedStyles;
 document.head.appendChild(styleSheet);
 
-// Initialize the book when DOM is loaded
+// Initialize the experience when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new InteractivePhotoBook();
-});
-
-// Enhanced loading animation
-document.addEventListener('DOMContentLoaded', () => {
-    document.documentElement.style.scrollBehavior = 'smooth';
-    
-    const loadingScreen = document.createElement('div');
-    loadingScreen.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        color: white;
-        font-size: 1.3rem;
-        font-family: 'Dancing Script', cursive;
-        flex-direction: column;
-    `;
-    
-    const loadingText = document.createElement('div');
-    loadingText.textContent = 'Loading Our Love Story...';
-    loadingText.style.marginBottom = '1rem';
-    
-    const loadingHearts = document.createElement('div');
-    loadingHearts.innerHTML = '💕 💖 💝 💕';
-    loadingHearts.style.fontSize = '1.5rem';
-    loadingHearts.style.animation = 'pulse 1s infinite';
-    
-    loadingScreen.appendChild(loadingText);
-    loadingScreen.appendChild(loadingHearts);
-    
-    document.body.appendChild(loadingScreen);
-    
-    setTimeout(() => {
-        loadingScreen.style.opacity = '0';
-        loadingScreen.style.transform = 'scale(0.9)';
-        setTimeout(() => {
-            loadingScreen.remove();
-        }, 500);
-    }, 2000);
+    new RomanticBirthdayExperience();
 }); 
