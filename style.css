@@ -136,49 +136,30 @@ img:hover {
   box-shadow: 0 15px 35px var(--shadow-dark);
 }
 
+/* === POLAROID LAYOUT FIX === */
+
 .polaroid-gallery {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 30px;
   padding: 2rem;
-  position: relative; /* optional */
 }
 
 .polaroid {
-  position: relative; /* not absolute anymore */
+  position: relative;
+  background: white;
+  padding: 20px 15px 40px 15px;
+  box-shadow: 0 8px 20px var(--shadow-dark);
+  text-align: center;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.1rem;
+  width: 200px;
+  opacity: 1;
   transform: rotate(var(--angle, 0deg)) scale(1);
-  opacity: 1; /* ensure they show */
-  animation: none; /* disable old animation */
+  transition: var(--transition);
+  cursor: pointer;
 }
-
-
-/* Generate more randomized positions
-.polaroid-grid .polaroid:nth-child(1) {
-  top: 10%; left: 5%; transform: rotate(-10deg);
-  animation-delay: 0.1s;
-  z-index: 1;
-}
-.polaroid-grid .polaroid:nth-child(2) {
-  top: 20%; right: 10%; transform: rotate(8deg);
-  animation-delay: 0.2s;
-  z-index: 2;
-}
-.polaroid-grid .polaroid:nth-child(3) {
-  bottom: 20%; left: 15%; transform: rotate(-14deg);
-  animation-delay: 0.3s;
-  z-index: 3;
-}
-.polaroid-grid .polaroid:nth-child(4) {
-  bottom: 30%; right: 18%; transform: rotate(6deg);
-  animation-delay: 0.4s;
-  z-index: 4;
-}
-.polaroid-grid .polaroid:nth-child(5) {
-  top: 50%; left: 40%; transform: rotate(-12deg);
-  animation-delay: 0.5s;
-  z-index: 5;
-} */
 
 .polaroid:hover {
   transform: scale(1.05) rotate(0deg);
@@ -192,14 +173,8 @@ img:hover {
   margin-bottom: 0.5rem;
 }
 
-@keyframes popIn {
-  to {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
-}
+/* === PROGRESS INDICATOR === */
 
-/* Progress Indicator */
 .progress-container {
   position: fixed;
   top: 20px;
@@ -228,7 +203,8 @@ img:hover {
   transform: scale(1.2);
 }
 
-/* Navigation Controls */
+/* === NAVIGATION === */
+
 .nav-controls {
   position: fixed;
   bottom: 30px;
@@ -268,18 +244,8 @@ img:hover {
   transform: none;
 }
 
-/* Page Counter */
-.page-counter {
-  color: var(--primary-color);
-  font-size: 0.9rem;
-  font-weight: 500;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 8px 15px;
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-}
+/* === FULLSCREEN MODAL === */
 
-/* Fullscreen Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -327,9 +293,8 @@ img:hover {
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* === LOADING SCREEN === */
 
-
-/* Loading Animation */
 .loading {
   position: fixed;
   top: 0;
@@ -363,124 +328,79 @@ img:hover {
   100% { transform: rotate(360deg); }
 }
 
-/* Mobile Optimizations */
+/* === MEDIA QUERIES (CLEANED) === */
+
 @media (max-width: 768px) {
   .page {
     padding: 1rem 0.5rem;
   }
-  
-  .polaroid-grid {
-    min-height: 300px;
-  }
-  
+
   .polaroid {
     padding: 15px 10px 30px 10px;
     font-size: 1rem;
     width: 160px;
   }
-  
-  .polaroid:nth-child(1) {
-    top: 10%;
-    left: 8%;
-    z-index: 1;
-  }
-  
-  .polaroid:nth-child(2) {
-    top: 40%;
-    right: 12%;
-    z-index: 2;
-  }
-  
-  .polaroid:nth-child(3) {
-    bottom: 15%;
-    left: 15%;
-    z-index: 3;
-  }
-  
+
   .nav-controls {
     bottom: 20px;
     gap: 15px;
   }
-  
+
   .nav-btn {
     width: 45px;
     height: 45px;
     font-size: 1rem;
   }
-  
+
   .progress-container {
     top: 15px;
     padding: 8px 12px;
   }
-  
-
 }
 
 @media (max-width: 480px) {
   h1 {
     font-size: 1.6rem;
   }
-  
+
   h2 {
     font-size: 1.3rem;
   }
-  
+
   p, blockquote {
     font-size: 1rem;
   }
-  
-  .polaroid-grid {
-    min-height: 250px;
-  }
-  
+
   .polaroid {
     width: 130px;
     font-size: 0.9rem;
   }
-  
-  .polaroid:nth-child(1) {
-    top: 8%;
-    left: 5%;
-    z-index: 1;
-  }
-  
-  .polaroid:nth-child(2) {
-    top: 35%;
-    right: 8%;
-    z-index: 2;
-  }
-  
-  .polaroid:nth-child(3) {
-    bottom: 12%;
-    left: 12%;
-    z-index: 3;
-  }
-  
+
   .nav-controls {
     bottom: 15px;
   }
-  
+
   .nav-btn {
     width: 40px;
     height: 40px;
   }
 }
 
-/* Touch-friendly improvements */
+/* === TOUCH DEVICES === */
 @media (hover: none) and (pointer: coarse) {
   .nav-btn:hover,
   .share-btn:hover,
   .polaroid:hover {
     transform: none;
   }
-  
+
   .nav-btn:active,
   .share-btn:active {
     transform: scale(0.95);
   }
 }
 
-/* Accessibility */
+/* === ACCESSIBILITY === */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -489,7 +409,7 @@ img:hover {
   }
 }
 
-/* High contrast mode support */
+/* === HIGH CONTRAST SUPPORT === */
 @media (prefers-contrast: high) {
   :root {
     --primary-color: #000;
