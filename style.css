@@ -121,16 +121,23 @@ img {
 
 .polaroid {
   background: white;
-  padding: 10px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  width: 140px;
+  padding: 20px 10px 40px 10px; /* Added more padding on the bottom for the "frame" effect */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  width: 200px; /* Fixed width for polaroid */
+  height: 250px; /* Adjust height to make it more square-like */
   text-align: center;
   font-family: 'Dancing Script', cursive;
   font-size: 1rem;
   opacity: 0;
   transform: scale(0.8) rotate(-5deg);
   animation: popIn 1s ease forwards;
-  transition: transform 0.3s ease;
+}
+
+.polaroid img {
+  width: 100%;
+  height: auto; /* Maintain image aspect ratio */
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .polaroid:nth-child(2) {
@@ -148,11 +155,6 @@ img {
   z-index: 10;
 }
 
-.polaroid img {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-}
 
 @keyframes popIn {
   to {
