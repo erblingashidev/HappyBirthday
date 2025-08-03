@@ -133,16 +133,6 @@ class StoryBook {
     document.querySelectorAll('.progress-dot').forEach((dot, index) => {
       dot.classList.toggle('active', index === this.currentPage);
     });
-    
-    // Update page counter
-    document.getElementById('pageCounter').textContent = `${this.currentPage + 1} / ${this.totalPages}`;
-    
-    // Update navigation buttons
-    document.getElementById('prevBtn').disabled = this.currentPage === 0;
-    document.getElementById('nextBtn').disabled = this.currentPage === this.totalPages - 1;
-    
-    // Add sound effect (optional)
-    this.playPageSound();
   }
 
   playPageSound() {
