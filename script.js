@@ -25,8 +25,7 @@ class StoryBook {
     document.getElementById('prevBtn').addEventListener('click', () => this.previousPage());
     document.getElementById('nextBtn').addEventListener('click', () => this.nextPage());
     
-    // Share button
-    document.getElementById('shareBtn').addEventListener('click', () => this.shareStory());
+    // Share button removed
     
     // Modal
     document.getElementById('modalClose').addEventListener('click', () => this.closeModal());
@@ -49,7 +48,6 @@ class StoryBook {
     // Click to advance (only on non-interactive elements)
     document.addEventListener('click', (e) => {
       if (!e.target.closest('.nav-btn') && 
-          !e.target.closest('.share-btn') && 
           !e.target.closest('.clickable-image') &&
           !e.target.closest('.modal')) {
         this.nextPage();
@@ -200,37 +198,7 @@ class StoryBook {
     document.body.style.overflow = '';
   }
 
-  async shareStory() {
-    const shareData = {
-      title: 'The Story of Us',
-      text: 'A beautiful love story - check it out!',
-      url: window.location.href
-    };
 
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        // Fallback for browsers that don't support Web Share API
-        const url = encodeURIComponent(window.location.href);
-        const text = encodeURIComponent(shareData.text);
-        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
-      }
-    } catch (error) {
-      console.log('Share failed:', error);
-      // Fallback: copy to clipboard
-      this.copyToClipboard(window.location.href);
-    }
-  }
-
-  async copyToClipboard(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-      this.showToast('Link copied to clipboard!');
-    } catch (error) {
-      console.log('Copy failed:', error);
-    }
-  }
 
   showToast(message) {
     // Create a simple toast notification
