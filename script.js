@@ -234,3 +234,13 @@ document.addEventListener('touchend', (event) => {
   }
   lastTouchEnd = now;
 }, false);
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.polaroid-gallery').forEach(grid => {
+    const polaroids = grid.querySelectorAll('.polaroid');
+    polaroids.forEach((p, i) => {
+      const angle = Math.floor(Math.random() * 10) - 5; // -5 to +5 degrees
+      p.style.setProperty('--angle', `${angle}deg`);
+    });
+  });
+});
