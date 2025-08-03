@@ -14,16 +14,16 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .page {
-  flex: 0 0 100vw;
+  position: absolute;
+  top: 0;
+  left: 100vw;
+  width: 100vw;
   height: 100vh;
-  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,7 +32,16 @@ body {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   box-shadow: inset 0 0 30px rgba(255, 200, 230, 0.3);
-  animation: fadeIn 1s ease-in;
+  transition: transform 1s ease, opacity 1s ease;
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.page.active {
+  left: 0;
+  opacity: 1;
+  transform: translateX(0);
+  z-index: 1;
 }
 
 .page h1, .page h2, .page p, blockquote {
@@ -43,27 +52,37 @@ body {
 
 h1 {
   font-size: 2.2rem;
-  animation: textFade 1.2s ease forwards;
 }
 
 h2 {
   font-size: 1.6rem;
-  animation: textFade 1.5s ease forwards;
 }
 
 p, blockquote {
-  font-family: 'Roboto', sans-serif;
-  font-size: 1.1rem;
-  color: #333;
-  line-height: 1.6;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.4rem;
+  color: #4b2c35;
+  line-height: 1.8;
   max-width: 85%;
-  opacity: 0;
-  animation: slideUp 1s forwards 0.5s;
+  transform: rotate(-5deg) translate(-10px, 5px);
+  white-space: pre-wrap;
 }
 
-blockquote {
-  font-style: italic;
-  color: #a83263;
+.typewriter {
+  overflow: hidden;
+  border-right: 0.15em solid #a83263;
+  white-space: nowrap;
+  animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #a83263; }
 }
 
 img {
@@ -71,35 +90,27 @@ img {
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   margin-top: 1rem;
-  opacity: 0;
-  animation: fadeInImg 1s ease forwards 0.5s;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
+.polaroid-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
-@keyframes textFade {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+.polaroid {
+  background: white;
+  padding: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transform: rotate(-3deg);
+  width: 140px;
+  text-align: center;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1rem;
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInImg {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Hide scrollbar */
-.book::-webkit-scrollbar {
-  display: none;
-}
-.book {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.polaroid img {
+  width: 100%;
+  border-radius: 8px;
 }
